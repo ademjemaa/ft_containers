@@ -8,6 +8,9 @@ namespace ft
     struct forward_iterator_tag : public input_iterator_tag { };
     struct bidirectional_iterator_tag : public forward_iterator_tag { };
     struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+    
+    //https://en.cppreference.com/w/cpp/iterator/iterator_tags
+    
     template<typename Iter>
     struct iterator_traits
     {
@@ -36,10 +39,12 @@ namespace ft
         typedef const T* pointer;
         typedef const T& reference;
         typedef random_access_iterator_tag iterator_category;
+    
     };
     // If it is a random-access iterator, the function uses operator- to calculate this. 
     //Otherwise, the function uses the increase operator (operator++) repeatedly.
-    //
+    //https://www.cplusplus.com/reference/iterator/distance/
+
     template<typename Iter>
     typename iterator_traits<Iter>::difference_type
     distance (Iter first, Iter last, input_iterator_tag)
@@ -66,6 +71,29 @@ namespace ft
         return distance(first, last, typename std::iterator_traits<IT>::iterator_category());
     }
 
+    //If it is a random-access iterator, the function uses just once operator+ or operator-.
+    //Otherwise, the function uses repeatedly the increase or decrease operator (operator++ or operator--)
+    //until n elements have been advanced.
+    //https://www.cplusplus.com/reference/iterator/advance/
+
+    template <typename RAIter, typename Distance>
+    void advance (RAIter& it, Distance n, random_access_iterator_tag)
+    {
+        it += n;
+    }
+
+    template <typename ITer, typename Distance>
+    void advance (ITer &it, Distance n, input_iterator_tag)
+    {
+        for (Distance i = 0; i < n; i++)
+            it++;
+    }
+
+    template <typename IT, typename Distance>
+	void advance(IT &it, Distance n)
+	{
+		return advance(it, n, typename IteratorTraits<IT>::iterator_category());
+	}
 
 }
 
