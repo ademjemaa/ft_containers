@@ -95,6 +95,28 @@ namespace ft
 		return advance(it, n, typename IteratorTraits<IT>::iterator_category());
 	}
 
+    //https://en.cppreference.com/w/cpp/iterator/reverse_iterator
+
+    template <typename Iter>
+    class reverse_iterator
+    {
+        private :
+            Iter base;
+        public :
+            typedef Iter iterator_type;
+            typedef typename iterator_traits<Iter>::iterator_category iterator_category;
+            typedef typename iterator_traits<Iter>::value_type	value_type;
+            typedef typename iterator_traits<Iter>::difference_type difference_type;
+            typedef typename iterator_traits<Iter>::pointer pointer;
+            typedef typename iterator_traits<Iter>::reference reference;
+
+            reverse_iterator()
+            {
+            }
+
+        
+
+    };
 }
 
 #endif
