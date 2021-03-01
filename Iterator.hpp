@@ -114,8 +114,17 @@ namespace ft
             {
             }
 
-        
+            reverse_iterator(Iter base) : base(base)
+            {
+            }
 
+            ~reverse_iterator()
+            {
+            }
+
+            reverse_iterator(const reverse_iterator<Iter> &rev) : base(rev.base)
+            {
+            }
     };
 }
 
