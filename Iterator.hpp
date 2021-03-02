@@ -1,6 +1,9 @@
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
 
+#include <cstddef>
+#include <iostream>
+
 namespace ft
 {
     struct input_iterator_tag { };
@@ -92,7 +95,7 @@ namespace ft
     template <typename IT, typename Distance>
 	void advance(IT &it, Distance n)
 	{
-		return advance(it, n, typename IteratorTraits<IT>::iterator_category());
+		return advance(it, n, typename iterator_traits<IT>::iterator_category());
 	}
 
     //https://en.cppreference.com/w/cpp/iterator/reverse_iterator
@@ -125,7 +128,145 @@ namespace ft
             reverse_iterator(const reverse_iterator<Iter> &rev) : base(rev.base)
             {
             }
+
+            reverse_iterator<Iter> &operator=(const reverse_iterator<Iter> &rev)
+            {
+                base = rev.base;
+                return *this;
+            }
+
+            reverse_iterator<Iter> &operator++()
+            {
+                --base;
+                return *this;
+            }
+
+            reverse_iterator<Iter> operator++(int)
+            {
+                reverse_iterator temp = *this;
+                ++(*this);
+                return temp;
+            }
+
+            reverse_iterator<Iter> &operator--()
+            {
+                ++base;
+                return *this;
+            }
+
+            reverse_iterator<Iter> operator--(int)
+            {
+                reverse_iterator temp = *this;
+                --(*this);
+                return temp;
+            }
+
+            //http://www.cplusplus.com/reference/iterator/reverse_iterator/operator*/
+            //read internal behavior in reference
+
+            reference operator*()
+            {
+                reverse_iterator tmp = *this;
+                --tmp;
+                return (tmp);
+            }
+
+            //http://www.cplusplus.com/reference/iterator/reverse_iterator/operator-%3E/
+
+            pointer operator->()
+            {
+                return &(operator*());
+            }
+
+            //http://www.cplusplus.com/reference/iterator/reverse_iterator/operator+/
+
+            reverse_iterator operator+ (difference_type n)
+            {
+                return (reverse_iterator(base - n));
+            }
+
+            reverse_iterator& operator+= (difference_type n)
+            {
+                base -= n;
+                return (*this);
+            }
+
+            reverse_iterator operator- (difference_type n)
+            {
+                return (reverse_iterator(base + n));
+            }
+
+            reverse_iterator& operator-= (difference_type n)
+            {
+                base += n;
+                return (*this);
+            }
+
+            reference operator[] (difference_type n)
+            {
+                return (*(*this + n));
+            }   
     };
+
+    //https://en.cppreference.com/w/cpp/iterator/reverse_iterator/operator_cmp
+    //comparisons
+
+    template <typename Iterator1, typename Iterator2>
+    bool operator==(const std::reverse_iterator<Iterator1>& lhs,
+                 const std::reverse_iterator<Iterator2>& rhs)
+    {
+        return (lhs.base() == rhs.base());
+    }
+
+    template <typename Iterator1, typename Iterator2>
+    bool operator!=(const std::reverse_iterator<Iterator1>& lhs,
+                 const std::reverse_iterator<Iterator2>& rhs)
+    {
+        return (lhs.base() != rhs.base());
+    }
+
+    template <typename Iterator1, typename Iterator2>
+    bool operator<( const std::reverse_iterator<Iterator1>& lhs,
+                const std::reverse_iterator<Iterator2>& rhs)
+    {
+        return (lhs.base() > rhs.base());
+    }
+
+    template <typename Iterator1, typename Iterator2>
+    bool operator<=( const std::reverse_iterator<Iterator1>& lhs,
+                 const std::reverse_iterator<Iterator2>& rhs)
+    {
+        return (lhs.base() >= rhs.base());
+    }
+
+    template <typename Iterator1, typename Iterator2>
+    bool operator>( const std::reverse_iterator<Iterator1>& lhs,
+                const std::reverse_iterator<Iterator2>& rhs)
+    {
+        return (lhs.base() < rhs.base());
+    }
+
+    template <typename Iterator1, typename Iterator2>
+    bool operator>=( const std::reverse_iterator<Iterator1>& lhs,
+                 const std::reverse_iterator<Iterator2>& rhs)
+    {
+        return (lhs.base() <= rhs.base());
+    }
+
+    template<typename Iter >
+    reverse_iterator<Iter> operator+(typename reverse_iterator<Iter>::difference_type n,
+               const reverse_iterator<Iter>& it)
+    {
+        return (reverse_iterator<Iter>(it.base() - n));
+    }
+
+    template <typename Iterator>
+    typename reverse_iterator<Iterator>::difference_type operator-( const reverse_iterator<Iterator>& lhs,
+               const reverse_iterator<Iterator>& rhs)
+    {
+        return (rhs.base() - lhs.base());
+    }
+
 }
 
 #endif
