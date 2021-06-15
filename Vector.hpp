@@ -66,11 +66,56 @@ namespace ft
                 p -= diff;
                 return *this;
             }
-            reference operator[](difference_type n) const
-		{
-			return *(*this + n);
-		}
+            reference operator[](difference_type diff) const
+            {
+                return *(*this + diff);
+            }
+            //the "friend" keyword gives access to protected and private members of the class they appear in
+            //three functions and the class vector would need access to vectoriterator protected attributes
+            template <typename _T>
+            friend bool operator==(const VectorIterator<_T> &lhs, const VectorIterator<_T> &rhs);
+
+            template <typename _T>
+            friend bool operator<(const VectorIterator<_T> &lhs, const VectorIterator<_T> &rhs);
+
+            template <typename _T>
+            friend ptrdiff_t operator-(const VectorIterator<_T> &lhs, const VectorIterator<_T> &rhs);
+
+            template <typename _T>
+            friend class Vector;
     };
+    template <typename T>
+	bool operator<(const VectorIterator<T> &one, const VectorIterator<T> &two)
+	{
+		return one.p < two.p;
+	}
+    template <typename T>
+	bool operator>(const VectorIterator<T> &one, const VectorIterator<T> &two)
+	{
+		return !(one < two);
+	}
+    template <typename T>
+	bool operator==(const VectorIterator<T> &one, const VectorIterator<T> &two)
+    {
+        if (!(one < two) && !(two < one))
+            return (true);
+        return (false);
+    }
+    template <typename T>
+	bool operator==(const VectorIterator<T> &one, const VectorIterator<T> &two)
+    {
+        return !(one == two);
+    }
+	template <typename T>
+	bool operator<=(const VectorIterator<T> &one, const VectorIterator<T> &two)
+	{
+		return !(one > two);
+	}
+	template <typename T>
+	bool operator>=(const VectorIterator<T> &one, const VectorIterator<T> &two)
+	{
+		return !(one < two);
+	}
 }
 
 #endif
