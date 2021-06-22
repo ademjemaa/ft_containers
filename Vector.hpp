@@ -158,8 +158,8 @@ namespace ft
             typedef const T &const_reference;
             typedef VectorIterator<T> iterator;
             typedef VectorIterator<const T> const_iterator;
-            typedef ft::reverse_iterator<T> reverse_iterator;
-            typedef ft::reverse_iterator<const T> const_reverse_iterator;
+            typedef reverse_iterator<T> rev;
+            typedef reverse_iterator<const T> const_rev;
         private :
             pointer array;
             size_type length;
@@ -210,19 +210,19 @@ namespace ft
             {
                 return array + length;
             }
-            reverse_iterator rbegin()
+            rev rbegin()
             {
                 return reverse_iterator<VectorIterator<T> >(end());
             }
-            const_reverse_iterator rbegin() const
+            const_rev rbegin() const
             {
                 return reverse_iterator<VectorIterator<T> >(end());
             }
-            reverse_iterator rend()
+            rev rend()
             {
                 return reverse_iterator<VectorIterator<T> >(begin());
             }
-            const_reverse_iterator rend() const
+            const_rev rend() const
             {
                 return reverse_iterator<VectorIterator<T> >(begin());
             }
