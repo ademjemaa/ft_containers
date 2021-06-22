@@ -248,7 +248,84 @@ namespace ft
                     return (true);
                 return (false);
             }
+            //reserve will allocate memory based on cap, if n is smaller or zero then no need to reallocate
+            //otherwise allocate new array with new size, cpy all elements, destroy old array and change cap and pointer
+            void reserve (size_type n)
+            {
+                if (n <= cap || cap == 0)
+                    return ;
+                std::allocator all;
+                pointer copy = all::allocate(n) ;
+                for (int i = 0; i < len; i++)
+                {
+                    all::construct(&copy[i], array[i]);
+                    all:destory(&array[i]);
+                }
+                all:deallocate(array, capacity);
+                array = copy;
+                capacity = n;
+            }
+            reference operator[] (size_type n)
+            {
+                return (array[n]);
+            }
+            reference at (size_type n)
+            {
+                if (n >= size())
+                    throw std::out_of_range(ss.str());
+                return (array[n]);
+            }
+            const_reference at (size_type n) const
+            {
+                if (n >= size())
+                    throw std::out_of_range(ss.str());
+                return (array[n]);
+            }
+            reference front()
+            {
+                return (array[0]);
+            }
+            const_reference front() const
+            {
+                return (array[0]);
+            }
+            reference back()
+            {
+                return (array[length - 1]);
+            }
+            const_reference back() const
+            {
+                return (array[length - 1]);
+            }
+            void assign (size_type n, const value_type& val)
+            {
+                reserve(n);
+                insert(begin(), n, val);
+            }
+            template <class InputIterator>
+            void assign (InputIterator first, InputIterator last)
+            {
+                reserve(last - first);
+                insert(begin(), first, last);
+            }
+            void push_back (const value_type& val)
+            {
+                insert(end(), val);
+            }
+            void pop_back()
+            {
+                erase(end() - 1);
+            }
+            iterator insert (iterator position, const value_type& val)
+            {
+                insert(position, 1, val);
+                return (position);
+            }
             
+            iterator erase (iterator first, iterator last)
+            {
+
+            }
     };
 }
 
