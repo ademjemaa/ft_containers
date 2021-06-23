@@ -85,6 +85,9 @@ namespace ft
             friend ptrdiff_t operator-(const VectorIterator<_T> &lhs, const VectorIterator<_T> &rhs);
 
             template <typename _T>
+            friend ptrdiff_t operator+(const VectorIterator<_T> &lhs, const VectorIterator<_T> &rhs);
+
+            template <typename _T>
             friend class Vector;
     };
     template <typename T>
@@ -173,11 +176,11 @@ namespace ft
                 insert(begin(), n, val);
             }
             template <typename InputIterator>
- /*           Vector (InputIterator first, InputIterator last) : array(NULL), length(0), cap(0)
+            Vector (InputIterator first, InputIterator last) : array(NULL), length(0), cap(0)
             {
                 insert(begin(), first, last);
             }
- */           Vector (const Vector& x) : array(NULL), length(0), cap(0)
+            Vector (const Vector& x) : array(NULL), length(0), cap(0)
             {
                 insert(begin(), x.begin(), x.end());
             }
@@ -306,13 +309,13 @@ namespace ft
             }
             void assign (size_type n, const value_type& val)
             {
-                reserve(n);
+                clear();
                 insert(begin(), n, val);
             }
             template <class InputIterator>
             void assign (InputIterator first, InputIterator last)
             {
-                reserve(last - first);
+                clear();
                 insert(begin(), first, last);
             }
             void push_back (const value_type& val)
@@ -351,7 +354,7 @@ namespace ft
                 insert(position, 1, val);
                 return (position);
             }
-/*            template <typename InputIterator>
+            template <typename InputIterator>
             void insert (iterator position, InputIterator first, InputIterator last)
             {
                 size_type index = position.p - array;
@@ -377,7 +380,7 @@ namespace ft
                 length += count;
                 
             }
- */           iterator erase (iterator position)
+            iterator erase (iterator position)
             {
                 erase(position, position + 1);
             }
@@ -385,10 +388,11 @@ namespace ft
             {
                 std::allocator<T> all;
                 if (first <= last)
-                    return ;
-                for (size_type i = first - array; i < array + last; i++)
-                    all.destory(&array[i]);
+                    return NULL;
+                for (size_type i = first - begin(); i < begin() + last; i++)
+                    all.destroy(&array[i]);
                 insert(first, last, end());
+                return (first);
             }
             void swap (Vector& x)
             {
