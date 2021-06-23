@@ -158,8 +158,8 @@ namespace ft
             typedef const T &const_reference;
             typedef VectorIterator<T> iterator;
             typedef VectorIterator<const T> const_iterator;
-            typedef reverse_iterator<T> rev;
-            typedef reverse_iterator<const T> const_rev;
+            typedef reverse_iterator<iterator> rev;
+            typedef reverse_iterator<const iterator> const_rev;
         private :
             pointer array;
             size_type length;
@@ -172,12 +172,12 @@ namespace ft
             {
                 insert(begin(), n, val);
             }
-            template <class InputIterator>
-            Vector (InputIterator first, InputIterator last) : array(NULL), length(0), cap(0)
+            template <typename InputIterator>
+ /*           Vector (InputIterator first, InputIterator last) : array(NULL), length(0), cap(0)
             {
                 insert(begin(), first, last);
             }
-            Vector (const Vector& x) : array(NULL), length(0), cap(0)
+ */           Vector (const Vector& x) : array(NULL), length(0), cap(0)
             {
                 insert(begin(), x.begin(), x.end());
             }
@@ -190,7 +190,7 @@ namespace ft
             }
             Vector &operator=(const Vector& x)
 		    {
-                erase(x.begin(), x.end());
+                clear();
                 insert(begin(), x.begin(), x.end());
                 return *this;
 		    }
@@ -255,14 +255,14 @@ namespace ft
             //otherwise allocate new array with new size, cpy all elements, destroy old array and change cap and pointer
             void reserve (size_type n)
             {
-                if (n <= cap || cap == 0)
+                if (n <= cap)
                     return ;
                 std::allocator<T> all;
                 pointer copy = all.allocate(n) ;
                 for (int i = 0; i < length; i++)
                 {
                     all.construct(&copy[i], array[i]);
-                    all.destory(&array[i]);
+                    all.destroy(&array[i]);
                 }
                 all.deallocate(array, cap);
                 array = copy;
@@ -323,38 +323,61 @@ namespace ft
             {
                 erase(end() - 1);
             }
+            void insert (iterator position, size_type n, const value_type& val)
+            {
+                
+                size_type index = position.p - array;
+                
+                if (!n)
+                    return;
+                reserve(length + n);
+                
+                std::allocator<T> all;
+                for (size_type i = length - 1; i >= (ptrdiff_t)index && length != 0; i--)
+                {
+                    all.construct(&array[i + n], array[i]);
+                    all.destroy(&array[i]);
+                }
+                
+                for (size_type i = index; i < index + n; i++)
+                {
+                    
+                    all.construct(&array[i], val);
+                }
+                length = length + n;
+            }
             iterator insert (iterator position, const value_type& val)
             {
                 insert(position, 1, val);
                 return (position);
             }
-            template <class InputIterator>
+/*            template <typename InputIterator>
             void insert (iterator position, InputIterator first, InputIterator last)
             {
-                while (first != last)
+                size_type index = position.p - array;
+                size_type count = last - first;
+                if (!count)
+                    return;
+
+                reserve(length + count); // reserve after calculating the index!
+                // (otherwhise iterator `pos` is invalidated)
+
+                std::allocator<T> alloc;
+
+                for (ptrdiff_t i = length - 1; i >= (ptrdiff_t)index; i--)
                 {
-                    insert(position, 1, *first);
-                    position++;
-                    ++first;
+                    // move elements count times to the right
+                    alloc.construct(&array[i + count], array[i]); // copy constructor
+                    alloc.destroy(&array[i]);					// call destructor
                 }
+
+                for (InputIterator ite = first; ite != last; ++ite)
+                    alloc.construct(&array[index++], *ite); // copy constructor
+
+                length += count;
                 
             }
-            void insert (iterator position, size_type n, const value_type& val)
-            {
-                if (!n)
-                    return;
-                reserve(length + n);
-                std::allocator<T> all;
-                for (size_type i = length - 1; i >= position - array; i--)
-                {
-                    all.construct(&array[i + n], array[i]);
-                    all.destroy(&array[i]);
-                }
-                for (size_type i = position - array; i < position - array + n; i++)
-                    all.construct(&array[i],val);
-                length = length + n;
-            }
-            iterator erase (iterator position)
+ */           iterator erase (iterator position)
             {
                 erase(position, position + 1);
             }
