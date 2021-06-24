@@ -7,6 +7,8 @@
 namespace ft
 {
     template <typename T>
+	class Vector;
+    template <typename T>
     class VectorIterator
     {
         public :
@@ -125,24 +127,24 @@ namespace ft
     //https://www.cplusplus.com/reference/iterator/move_iterator/operator_plus-free/
     //https://en.cppreference.com/w/cpp/iterator/move_iterator/operator_arith
     template <typename T>
-    VectorIterator<T> operator-(const VectorIterator<T> &it, size_t diff)
+    VectorIterator<T> operator-(VectorIterator<T> &it, size_t diff)
     {
         VectorIterator<T> tmp = it;
         return it -= diff;
     }
     template <typename T>
-    VectorIterator<T> operator-(size_t diff, const VectorIterator<T> &it)
+    VectorIterator<T> operator-(size_t diff, VectorIterator<T> &it)
     {
         return it -= diff;
     }
 	template <typename T>
-	VectorIterator<T> operator+(const VectorIterator<T> &it, size_t diff)
+	VectorIterator<T> operator+(VectorIterator<T> &it, size_t diff)
 	{
 		VectorIterator<T> tmp = it;
 		return tmp += diff;
 	}
     template <typename T>
-	VectorIterator<T> operator+(size_t diff, const VectorIterator<T> &it)
+	VectorIterator<T> operator+(size_t diff,VectorIterator<T> &it)
 	{
         VectorIterator<T> tmp = it;
 		return tmp += diff;
@@ -203,11 +205,11 @@ namespace ft
             }
             const_iterator begin() const
             {
-                return array;
+                return (array);
             }
             iterator end()
             {
-                return array + length;
+                return (array + length);
             }
             const_iterator end() const
             {
