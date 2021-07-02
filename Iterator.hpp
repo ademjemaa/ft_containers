@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <iostream>
 #include <string>
+#include <limits>
 
 namespace ft
 {

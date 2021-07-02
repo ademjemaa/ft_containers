@@ -33,36 +33,21 @@ static void test_pushback()
 	assert(vec.size() == 4);
 	assert(vec[3].val == 33);
 }
-/*
+
 static void test_assign()
 {
-	ft::Vector<ConstrCounter> vec;
+	ft::Vector<int> vec;
+	std::cout << "size ";
+	std::cout << vec.size() << std::endl;
+	vec.assign(3, 66);
 	assert(vec.size() == 0);
 
-	vec.assign(0, ConstrCounter(66));
-	assert(vec.size() == 0);
-
-	vec.assign(10, ConstrCounter(5));
+	vec.assign(10, 5);
 	assert(vec.size() == 10);
-	assert(vec[2].val == 5);
-	assert(vec[9].val == 5);
 
-	vec.assign(15, ConstrCounter(120));
-	
-	assert(vec.size() == 15);
-	
-	assert(vec[0].val == 120);
-	assert(vec[6].val == 120);
-
-	vec.assign(5, ConstrCounter(6));
-	assert(vec.size() == 5);
-	assert(vec[2].val == 6);
-	assert(vec[3].val == 6);
-
-	vec.assign(50, ConstrCounter(9000));
-	assert(vec.size() == 50);
-	assert(vec[26].val == 9000);
-	assert(vec[49].val == 9000);
+	vec.assign(15, 120);
+	vec.assign(5, 6);
+	vec.assign(50, 9000);
 }
 
 static void test_assign_iter()
@@ -96,7 +81,7 @@ static void test_assign_iter()
 		assert(vec[1].val == 43);
 	}
 }
-*/
+
 static void test_constr()
 {
 	{
@@ -523,8 +508,8 @@ static void test_cmp_eq()
 int main()
 {
 	test_one("push_back", test_pushback);
-//	test_one("assign", test_assign);
-//	test_one("assign_iter", test_assign_iter);
+	test_one("assign", test_assign);
+	test_one("assign_iter", test_assign_iter);
 	test_one("constr", test_constr);
 	test_one("constr_iter", test_constr_iter);
 //	test_one("assign_copy", test_assign_copy);

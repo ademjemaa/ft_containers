@@ -127,24 +127,24 @@ namespace ft
     //https://www.cplusplus.com/reference/iterator/move_iterator/operator_plus-free/
     //https://en.cppreference.com/w/cpp/iterator/move_iterator/operator_arith
     template <typename T>
-    VectorIterator<T> operator-(VectorIterator<T> &it, size_t diff)
+    VectorIterator<T> operator-(VectorIterator<T> it, size_t diff)
     {
         VectorIterator<T> tmp = it;
         return it -= diff;
     }
     template <typename T>
-    VectorIterator<T> operator-(size_t diff, VectorIterator<T> &it)
+    VectorIterator<T> operator-(size_t diff, VectorIterator<T> it)
     {
         return it -= diff;
     }
 	template <typename T>
-	VectorIterator<T> operator+(VectorIterator<T> &it, size_t diff)
+	VectorIterator<T> operator+(VectorIterator<T> it, size_t diff)
 	{
 		VectorIterator<T> tmp = it;
 		return tmp += diff;
 	}
     template <typename T>
-	VectorIterator<T> operator+(size_t diff,VectorIterator<T> &it)
+	VectorIterator<T> operator+(size_t diff,VectorIterator<T> it)
 	{
         VectorIterator<T> tmp = it;
 		return tmp += diff;
@@ -308,6 +308,11 @@ namespace ft
             const_reference back() const
             {
                 return (array[length - 1]);
+            }
+            void assign (size_type n, value_type val)
+            {
+                clear();
+                insert(begin(), n, val);
             }
             void assign (size_type n, const value_type& val)
             {
