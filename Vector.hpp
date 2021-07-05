@@ -309,12 +309,12 @@ namespace ft
             {
                 return (array[length - 1]);
             }
-            void assign (size_type n, value_type val)
+            void assign (const size_type n, const value_type val)
             {
                 clear();
                 insert(begin(), n, val);
             }
-            void assign (size_type n, const value_type& val)
+            void assign (const size_type n, const value_type& val)
             {
                 clear();
                 insert(begin(), n, val);
@@ -323,7 +323,7 @@ namespace ft
             void assign (InputIterator first, InputIterator last)
             {
                 clear();
-                insert(begin(), first, last);
+                insert(begin(), last - first);
             }
             void push_back (const value_type& val)
             {
