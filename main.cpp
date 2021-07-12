@@ -44,7 +44,6 @@ static void test_assign()
 
 	vec.assign(10, 5);
 	assert(vec.size() == 10);
-
 	vec.assign(15, 120);
 	vec.assign(5, 6);
 	vec.assign(50, 9000);
