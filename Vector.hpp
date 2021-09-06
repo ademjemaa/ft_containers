@@ -1,12 +1,17 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 #include <stdio.h>
-#include <memory>
+# include <limits>
+# include <memory>
+# include <vector>
+# include <cstddef>
+# include <sstream>
 #include "Iterator.hpp"
+#include "extras.hpp"
 
 namespace ft
 {
-    template <typename T>
+    template <typename T, class Allocator>
 	class Vector;
     template <typename T>
     class VectorIterator
@@ -21,8 +26,8 @@ namespace ft
         private :
             typedef VectorIterator<T> It;
             pointer p;
-            VectorIterator(pointer e) : p(e){}
         public :
+            VectorIterator(pointer e) : p(e){}
             VectorIterator() : p(NULL) {}
             VectorIterator(const It &elem) : p(elem.p) {}
             ~VectorIterator() {}
@@ -75,6 +80,11 @@ namespace ft
             {
                 return *(*this + diff);
             }
+            
+            //declaring inputIter as a valid member of vectoriterator
+            //enable_if : https://en.cppreference.com/w/cpp/types/enable_if
+            static const bool InputIter = true;
+
             //the "friend" keyword gives access to protected and private members of the class they appear in
             //three functions and the class vector would need access to vectoriterator protected attributes
             template <typename _T>
@@ -89,7 +99,7 @@ namespace ft
             template <typename _T>
             friend ptrdiff_t operator+(const VectorIterator<_T> &lhs, const VectorIterator<_T> &rhs);
 
-            template <typename _T>
+            template<typename _T, class Allocator>
             friend class Vector;
     };
     template <typename T>
@@ -137,6 +147,11 @@ namespace ft
     {
         return it -= diff;
     }
+    template <typename _T>
+    ptrdiff_t operator-(const VectorIterator<_T> &lhs, const VectorIterator<_T> &rhs)
+    {
+        return lhs.p - rhs.p;
+    }
 	template <typename T>
 	VectorIterator<T> operator+(VectorIterator<T> it, size_t diff)
 	{
@@ -149,11 +164,17 @@ namespace ft
         VectorIterator<T> tmp = it;
 		return tmp += diff;
 	}
+    template <typename _T>
+    ptrdiff_t operator+(const VectorIterator<_T> &lhs, const VectorIterator<_T> &rhs)
+    {
+        return lhs.p - rhs.p;
+    }
     //https://www.cplusplus.com/reference/vector/vector/
-    template <typename T>
+    template <typename T, class Allocator = std::allocator<T> >
     class Vector
     {
         public :
+            typedef Allocator allocator_type;
             typedef T value_type;
             typedef size_t size_type;
             typedef ptrdiff_t difference_type;
@@ -166,19 +187,25 @@ namespace ft
             typedef reverse_iterator<iterator> rev;
             typedef reverse_iterator<const iterator> const_rev;
         private :
+            Allocator all;
             pointer array;
             size_type length;
             size_type cap;
         public :
             //Constructs an empty container, with no elements.
-            Vector() : array(NULL), length(0), cap(0) {}
+            Vector(const allocator_type& alloc = allocator_type()) : all(alloc), array(NULL), length(0), cap(0) {}
             //Constructs a container with n elements. Each element is a copy of val.
-            Vector(size_type n, const value_type& val = value_type()) : array(NULL), length(0), cap(0)
+            Vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
+            all(alloc), array(NULL), length(0), cap(0)
             {
-                insert(begin(), n, val);
+                this->reserve(n);
+		        for (size_type i = 0; i < n; i++)
+			        all.construct(array + i, val);
+                length = n;
             }
             template <typename InputIterator>
-            Vector (InputIterator first, InputIterator last) : array(NULL), length(0), cap(0)
+            Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+            typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : array(NULL), length(0), cap(0)
             {
                 insert(begin(), first, last);
             }
@@ -188,7 +215,6 @@ namespace ft
             }
             ~Vector()
             {
-                std::allocator<value_type> all;
                 for (int i = 0; i < length; i++)
                     all.destroy(&array[i]);
                 all.deallocate(array, cap);
@@ -262,14 +288,10 @@ namespace ft
             {
                 if (n <= cap)
                     return ;
-                std::allocator<T> all;
                 pointer copy = all.allocate(n) ;
                 for (int i = 0; i < length; i++)
-                {
                     all.construct(&copy[i], array[i]);
-                    all.destroy(&array[i]);
-                }
-                all.deallocate(array, cap);
+                //all.deallocate(array, cap);
                 array = copy;
                 cap = n;
             }
@@ -314,16 +336,12 @@ namespace ft
                 clear();
                 insert(begin(), n, val);
             }
-            void assign (const size_type n, const value_type& val)
-            {
-                clear();
-                insert(begin(), n, val);
-            }
             template <class InputIterator>
-            void assign (InputIterator first, InputIterator last)
+            void assign (InputIterator first, InputIterator last,
+            typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL)
             {
                 clear();
-                insert(begin(), last - first);
+                insert(begin(), first, last);
             }
             void push_back (const value_type& val)
             {
@@ -331,18 +349,20 @@ namespace ft
             }
             void pop_back()
             {
-                erase(end() - 1);
+                if (length > 0)
+                {
+                    all.destroy(array + (length - 1));
+                    length--;
+                }
             }
             void insert (iterator position, size_type n, const value_type& val)
             {
-                
                 size_type index = position.p - array;
                 
                 if (!n)
                     return;
                 reserve(length + n);
                 
-                std::allocator<T> all;
                 for (size_type i = length - 1; i >= (ptrdiff_t)index && length != 0; i--)
                 {
                     all.construct(&array[i + n], array[i]);
@@ -362,43 +382,49 @@ namespace ft
                 return (position);
             }
             template <typename InputIterator>
-            void insert (iterator position, InputIterator first, InputIterator last)
+            void insert (iterator position, InputIterator first, InputIterator last,
+            typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL)
             {
                 size_type index = position.p - array;
                 size_type count = last - first;
                 if (!count)
                     return;
-
                 reserve(length + count); // reserve after calculating the index!
                 // (otherwhise iterator `pos` is invalidated)
-
-                std::allocator<T> alloc;
 
                 for (ptrdiff_t i = length - 1; i >= (ptrdiff_t)index; i--)
                 {
                     // move elements count times to the right
-                    alloc.construct(&array[i + count], array[i]); // copy constructor
-                    alloc.destroy(&array[i]);					// call destructor
+                    all.construct(&array[i + count], array[i]); // copy constructor
+                    all.destroy(&array[i]);					// call destructor
                 }
 
                 for (InputIterator ite = first; ite != last; ++ite)
-                    alloc.construct(&array[index++], *ite); // copy constructor
+                    all.construct(&array[index++], *ite); // copy constructor
 
                 length += count;
                 
             }
             iterator erase (iterator position)
             {
-                erase(position, position + 1);
+				Vector rest(position + 1, end());
+
+				for (size_type i = 0; i < rest.size(); i++)
+					pop_back();
+				pop_back();
+				for (size_type i = 0; i < rest.size(); i++)
+					push_back(rest[i]);
+				return (position);
+
             }
             iterator erase (iterator first, iterator last)
             {
-                std::allocator<T> all;
-                if (first <= last)
-                    return NULL;
-                for (size_type i = first - begin(); i < begin() + last; i++)
-                    all.destroy(&array[i]);
-                insert(first, last, end());
+                iterator tmp(first);
+				while (tmp != last)
+				{
+					erase(first);
+					tmp++;
+				}
                 return (first);
             }
             void swap (Vector& x)
@@ -436,7 +462,7 @@ namespace ft
     template <typename T>
     bool operator<(const Vector<T> &lhs, const Vector<T> &rhs)
     {
-        return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
     }
     template <typename T>
     bool operator>(const Vector<T> &lhs, const Vector<T> &rhs)
@@ -458,5 +484,19 @@ namespace ft
     {
         x.swap(y);
     }
+    template < class T >
+    std::ostream& operator <<(std::ostream& s, ft::Vector<T>& vec) 
+    {
+        if (vec.empty() == true)
+            return (s);
+        s << "{";
+        for (typename Vector<T>::iterator it = vec.begin(); it + 1 != vec.end(); ++it)
+        {
+            s << *it << ", ";
+        }
+        s << vec[vec.size() - 1] << "}";
+        return s;
+    }
+
 }
 #endif
