@@ -127,12 +127,12 @@ namespace ft
 	template <typename T>
 	bool operator<=(const VectorIterator<T> &one, const VectorIterator<T> &two)
 	{
-		return !(one > two);
+		return ((one == two) || (one < two));
 	}
 	template <typename T>
 	bool operator>=(const VectorIterator<T> &one, const VectorIterator<T> &two)
 	{
-		return !(one < two);
+		return ((one == two) || (one > two));
 	}
     //https://www.cplusplus.com/reference/iterator/move_iterator/operator_plus-free/
     //https://en.cppreference.com/w/cpp/iterator/move_iterator/operator_arith
@@ -205,7 +205,7 @@ namespace ft
             }
             template <typename InputIterator>
             Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-            typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : array(NULL), length(0), cap(0)
+            typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : all(alloc), array(NULL), length(0), cap(0)
             {
                 insert(begin(), first, last);
             }
@@ -215,7 +215,7 @@ namespace ft
             }
             ~Vector()
             {
-                for (int i = 0; i < length; i++)
+                for (size_type i = 0; i < length; i++)
                     all.destroy(&array[i]);
                 all.deallocate(array, cap);
             }
@@ -289,9 +289,8 @@ namespace ft
                 if (n <= cap)
                     return ;
                 pointer copy = all.allocate(n) ;
-                for (int i = 0; i < length; i++)
+                for (size_type i = 0; i < length; i++)
                     all.construct(&copy[i], array[i]);
-                //all.deallocate(array, cap);
                 array = copy;
                 cap = n;
             }
@@ -363,7 +362,7 @@ namespace ft
                     return;
                 reserve(length + n);
                 
-                for (size_type i = length - 1; i >= (ptrdiff_t)index && length != 0; i--)
+                for (size_type i = length - 1; i >= index && length != 0; i--)
                 {
                     all.construct(&array[i + n], array[i]);
                     all.destroy(&array[i]);
@@ -440,62 +439,58 @@ namespace ft
     };
     //http://www.cplusplus.com/reference/vector/vector/operators/
     //compares vectors including their content and size
-    template <typename T>
-    bool operator==(const Vector<T> &lhs, const Vector<T> &rhs)
+    template <typename T, class Allocator>
+    bool operator==(const Vector<T, Allocator> &lhs, const Vector<T, Allocator> &rhs)
     {
-        size_t i = 0;
-        size_t j = 0;
+        typename ft::Vector<T>::const_iterator it_left = lhs.begin();
+        typename ft::Vector<T>::const_iterator it_right = rhs.begin();
+
         if (lhs.size() != rhs.size())
             return (false);
-        while (i < lhs.size() && j < rhs.size() && lhs[i] == rhs[j])
-        {
-            i++;
-            j++;
-        }
-        return (lhs[i] == rhs[j]);
+        for (;(it_left != lhs.end() && it_right != rhs.end() && *it_left == *it_right);
+            it_left++, it_right++);
+        return (it_left == lhs.end() && it_right == rhs.end());
     }
-    template <typename T>
-    bool operator!=(const Vector<T> &lhs, const Vector<T> &rhs)
+    template <typename T, class Allocator>
+    bool operator!=(const Vector<T, Allocator> &lhs, const Vector<T, Allocator> &rhs)
     {
         return (!(lhs == rhs));
     }
-    template <typename T>
-    bool operator<(const Vector<T> &lhs, const Vector<T> &rhs)
+    template <typename T, class Allocator>
+    bool operator<(const Vector<T, Allocator> &lhs, const Vector<T, Allocator> &rhs)
     {
         return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
     }
-    template <typename T>
-    bool operator>(const Vector<T> &lhs, const Vector<T> &rhs)
+    template <typename T, class Allocator>
+    bool operator>(const Vector<T, Allocator> &lhs, const Vector<T, Allocator> &rhs)
     {
         return (rhs < lhs);
     }
-    template <typename T>
-    bool operator<=(const Vector<T> &lhs, const Vector<T> &rhs)
+    template <typename T, class Allocator>
+    bool operator<=(const Vector<T, Allocator> &lhs, const Vector<T, Allocator> &rhs)
     {
         return (!(rhs < lhs));
     }
-    template <typename T>
-    bool operator>=(const Vector<T> &lhs, const Vector<T> &rhs)
+    template <typename T, class Allocator>
+    bool operator>=(const Vector<T, Allocator> &lhs, const Vector<T, Allocator> &rhs)
     {
         return (!(lhs < rhs));
     }
-    template <typename T>
-    void swap (Vector<T>& x, Vector<T>& y)
+    template <typename T, class Allocator>
+    void swap (Vector<T, Allocator>& x, Vector<T, Allocator>& y)
     {
         x.swap(y);
     }
-    template < class T >
-    std::ostream& operator <<(std::ostream& s, ft::Vector<T>& vec) 
+    template <class T>
+    std::ostream& operator <<(std::ostream& str, ft::Vector<T>& vec) 
     {
-        if (vec.empty() == true)
-            return (s);
-        s << "{";
+        if (vec.empty())
+            return (str);
+        str << "[";
         for (typename Vector<T>::iterator it = vec.begin(); it + 1 != vec.end(); ++it)
-        {
-            s << *it << ", ";
-        }
-        s << vec[vec.size() - 1] << "}";
-        return s;
+            str << *it << "; ";
+        str << vec[vec.size() - 1] << "]";
+        return str;
     }
 
 }

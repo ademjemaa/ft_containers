@@ -722,7 +722,6 @@ static void	test_iterator_booleans_ft()
 static void	test_iterator_booleans_std()
 {
 	std::vector<int>				v;
-	std::vector<int>::iterator	it;
 
 	std::cout << "#### STD PART ####" << std::endl;
 	std::cout << "For a vector v : ";
@@ -1199,6 +1198,7 @@ static void	test_insert_std(void)
 	std::cout << "}" << std::endl << std::endl;
 
 	v1.insert(v1.begin(), "BANANAS SUKS ");
+
 	std::cout << "insert(v1.begin(), \"BANANAS SUKS \")" << std::endl;
 
 	std::cout << "v1 now = ";
@@ -2217,7 +2217,7 @@ static void	test_non_member_swap(void)
 
 int	main(void)
 {
-	/*test_push();
+	test_push();
 	test_element_access();
 	test_pop_back();
 	test_re_serve_size();
@@ -2225,8 +2225,7 @@ int	main(void)
 	test_iterator_incrementers_std();
 	test_iterator_arithmetics_ft();
 	test_iterator_arithmetics_std();
-	test_iterator_booleans_ft();//error
-	test_iterator_booleans_std();
+
 	test_iterator_deref_ft();
 	test_iterator_deref_std();	
 	test_iterator();
@@ -2235,6 +2234,10 @@ int	main(void)
 	test_assign();
 	test_clear_erase();
 	test_swap();
+	test_insert();
+	test_reverse_iterator_std();
+	test_non_member_swap();
+	test_iterator_booleans_ft();//error
+	test_iterator_booleans_std();
 	test_non_member_ope();//seg fault
-	test_non_member_swap();*/
 }
