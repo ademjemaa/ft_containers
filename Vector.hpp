@@ -288,9 +288,10 @@ namespace ft
             {
                 if (n <= cap)
                     return ;
-                pointer copy = all.allocate(n) ;
+                pointer copy = all.allocate(n);
                 for (size_type i = 0; i < length; i++)
                     all.construct(&copy[i], array[i]);
+                all.deallocate(array, cap);
                 array = copy;
                 cap = n;
             }
@@ -344,7 +345,10 @@ namespace ft
             }
             void push_back (const value_type& val)
             {
-                insert(end(), val);
+                if (capacity() == length)
+                    reserve(capacity() + 1);
+                all.construct(array + length, val);
+                length++;
             }
             void pop_back()
             {
@@ -361,13 +365,11 @@ namespace ft
                 if (!n)
                     return;
                 reserve(length + n);
-                
-                for (size_type i = length - 1; i >= index && length != 0; i--)
+                for (size_type i = length - 1; i > index && length != 0; i--)
                 {
                     all.construct(&array[i + n], array[i]);
                     all.destroy(&array[i]);
                 }
-                
                 for (size_type i = index; i < index + n; i++)
                 {
                     
@@ -377,8 +379,24 @@ namespace ft
             }
             iterator insert (iterator position, const value_type& val)
             {
-                insert(position, 1, val);
-                return (position);
+		        difference_type		pos = position - this->begin();
+                size_type           len = length + 1;
+
+
+                Vector		temp(position, this->end());
+                Vector      tmp(this->begin(), position);
+
+                clear();
+                reserve(len);
+                for (iterator it = tmp.begin(); it != tmp.end(); it++)
+                    this->push_back(*it);
+
+                this->push_back(val);
+
+                for (iterator it = temp.begin(); it != temp.end(); it++)
+                    this->push_back(*it);
+
+                return (this->begin() + pos);
             }
             template <typename InputIterator>
             void insert (iterator position, InputIterator first, InputIterator last,

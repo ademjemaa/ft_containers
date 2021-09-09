@@ -42,11 +42,11 @@ namespace ft{
             {
                 ctnr.pop_back();
             }
-            template<T, Container >
-            friend bool operator==(const Stack<T,Container>& lhs, const Stack<T,Container>& rhs );
+            template<typename T1 ,typename Container1>
+            friend bool operator==(const Stack<T1,Container1>& lhs, const Stack<T1,Container1>& rhs );
 
-            template<T, Container >
-            friend bool operator<(const Stack<T,Container>& lhs, const Stack<T,Container>& rhs );
+            template<typename T1,typename Container1>
+            friend bool operator<(const Stack<T1,Container1>& lhs, const Stack<T1,Container1>& rhs );
     };
     //https://en.cppreference.com/w/cpp/container/stack/operator_cmp
     template<typename T, typename Container >

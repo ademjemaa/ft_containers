@@ -2111,27 +2111,27 @@ static void	test_non_member_ope(void)
 	std::cout << "#### FT NON-MEMBER OPERATORS TEST ####" << std::endl;
 	std::cout << "#- EQUAL & NON-EQUAL -#" << std::endl;
 
-	ft::Vector<std::string>	v_str1;
+	ft::Vector<int>	v_str1;
 
-	v_str1.push_back("Mulhouse");
-	v_str1.push_back("Niort");
-	v_str1.push_back("Locmaria grand-champ");
-	v_str1.push_back("Vatan");
-	v_str1.push_back("jouy-en-josasse");
+	v_str1.push_back(69);
+	v_str1.push_back(44);
+	v_str1.push_back(42);
+	v_str1.push_back(22);
+	v_str1.push_back(666);
 
-	ft::Vector<std::string>	v_str2(v_str1);
+	ft::Vector<int>	v_str2(v_str1);
 
-	ft::Vector<std::string>	v_str3;
+	ft::Vector<int>	v_str3;
 
-	v_str3.push_back("Paris");
-	v_str3.push_back("Lyon");
-	v_str3.push_back("Toulouse");
-	v_str3.push_back("Grenoble");
-	v_str3.push_back("Brest");
+	v_str3.push_back(42);
+	v_str3.push_back(420);
+	v_str3.push_back(6666);
+	v_str3.push_back(1337);
+	v_str3.push_back(33);
 
-	std::cout << "For string vector v_str1 : " << v_str1 << std::endl;
-	std::cout << "For string vector v_str2 : " << v_str2 << std::endl;
-	std::cout << "For string vector v_str3 : " << v_str3 << std::endl << std::endl;
+	std::cout << "For int v_str1 : " << v_str1 << std::endl;
+	std::cout << "For int v_str2 : " << v_str2 << std::endl;
+	std::cout << "For int v_str3 : " << v_str3 << std::endl << std::endl;
 
 	std::cout << "v_str1 == v_str1 : " << std::boolalpha << (v_str1 == v_str1) << std::endl << std::endl;
 
@@ -2176,7 +2176,7 @@ static void	test_non_member_ope(void)
 	std::cout << "v_nums1 >= v_nums2 = " << (v_nums1 >= v_nums2) << std::endl;
 	std::cout << "v_nums2 >= v_nums1 = " << (v_nums2 >= v_nums1) << std::endl << std::endl;
 
-	test_non_member_ope_std();
+//	test_non_member_ope_std();
 }
 
 static void	test_non_member_swap_std(void)
@@ -2217,6 +2217,7 @@ static void	test_non_member_swap(void)
 
 int	main(void)
 {
+	test_insert();
 	test_push();
 	test_element_access();
 	test_pop_back();
@@ -2234,7 +2235,6 @@ int	main(void)
 	test_assign();
 	test_clear_erase();
 	test_swap();
-	test_insert();
 	test_reverse_iterator_std();
 	test_non_member_swap();
 	test_iterator_booleans_ft();//error
