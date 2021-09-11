@@ -1,6 +1,9 @@
 #ifndef EXTRAS_HPP
 # define EXTRAS_HPP
 
+#include <stdio.h>
+# include <sstream>
+
 namespace ft{
 
     //enable_if : https://en.cppreference.com/w/cpp/types/enable_if
@@ -92,6 +95,22 @@ namespace ft{
     bool operator>=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )
     {
         return (!(lhs < rhs));
+    }
+
+    template< typename T1, typename T2 >
+    pair<T1,T2> make_pair( T1 t, T2 u )
+    {
+        return(ft::pair<T1, T2>(t, u));
+    }
+
+    template <typename T1, typename T2>
+    std::ostream& operator <<(std::ostream& str, ft::pair<T1, T2>& p)
+    {
+        str << "first : ";
+        str << p.first;
+        str << " second : ";
+        str << p.second;
+        return str;
     }
 }
 #endif
