@@ -6,11 +6,11 @@ namespace ft{
     //enable_if : https://en.cppreference.com/w/cpp/types/enable_if
     template<bool B, class T = void>
     struct enable_if {};
-    
+
     template<class T>
-    struct enable_if<true, T> 
+    struct enable_if<true, T>
         {
-            typedef T type; 
+            typedef T type;
         };
     //lexicographical_compare https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
     template<class InputIt1, class InputIt2>
@@ -24,5 +24,74 @@ namespace ft{
             }
             return (first1 == last1) && (first2 != last2);
         }
+    template <typename T1, typename T2>
+    class pair
+    {
+        public :
+            T1  first;
+            T2  second;
+
+            //https://en.cppreference.com/w/cpp/utility/pair/pair
+            pair()
+            {
+            };
+            pair( const T1& x, const T2& y ) : first(x), second(y)  {};
+            template< class U1, class U2 >
+            pair( const pair<U1, U2>& p)
+            {
+                this->first = p.first;
+                this->second = p.second;
+            }
+            //https://en.cppreference.com/w/cpp/utility/pair/operator%3D
+            pair& operator=( const pair& other )
+            {
+                this->first = other.first;
+                this->second = other.second;
+                return (*this);
+            }
+    };
+
+    template<class T1, class T2>
+    bool operator==( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+    {
+        return (lhs.first == rhs.first && lhs.second == rhs.second);
+    }
+
+    template< class T1, class T2 >
+    bool operator!=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+    {
+        return (!(lhs == rhs));
+    }
+
+    template< class T1, class T2 >
+    bool operator<( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+    {
+        if (lhs.first < rhs.first)
+            return (true);
+        else if (rhs.first < lhs.first)
+            return (false);
+        else if (lhs.second < rhs.second)
+            return (true);
+        else
+            return (false);
+    }
+
+    template< class T1, class T2 >
+    bool operator<=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+    {
+        return(!(rhs < lhs));
+    }
+
+    template< class T1, class T2 >
+    bool operator>( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+    {
+        return (rhs < lhs);
+    }
+
+    template< class T1, class T2 >
+    bool operator>=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )
+    {
+        return (!(lhs < rhs));
+    }
 }
 #endif
