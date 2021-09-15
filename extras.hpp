@@ -112,5 +112,29 @@ namespace ft{
         str << p.second;
         return str;
     }
+    //binary function https://en.cppreference.com/w/cpp/utility/functional/binary_function
+
+    template<
+    class Arg1,
+    class Arg2,
+    class Result> 
+    struct binary_function
+    {
+        typedef Arg1    first_argument_type;
+        typedef Arg2    second_argument_type;
+        typedef Result  result_type;
+    };
+
+    //std::less https://en.cppreference.com/w/cpp/utility/functional/less
+
+    template<typename T>
+		struct less : 
+        public binary_function<T, T, bool>
+		{
+			bool operator()( const T& lhs, const T& rhs ) const
+			{
+				return (lhs < rhs);
+			}
+		};
 }
 #endif

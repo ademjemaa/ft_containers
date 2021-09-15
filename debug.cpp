@@ -2226,7 +2226,6 @@ int	main(void)
 	test_iterator_incrementers_std();
 	test_iterator_arithmetics_ft();
 	test_iterator_arithmetics_std();
-
 	test_iterator_deref_ft();
 	test_iterator_deref_std();	
 	test_iterator();
@@ -2237,7 +2236,8 @@ int	main(void)
 	test_swap();
 	test_reverse_iterator_std();
 	test_non_member_swap();
-	test_iterator_booleans_ft();//error
+	test_iterator_booleans_ft();
 	test_iterator_booleans_std();
-	test_non_member_ope();//seg fault
+	test_non_member_ope();
+	test_non_member_ope_std();
 }
