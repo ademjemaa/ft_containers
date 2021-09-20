@@ -117,7 +117,7 @@ namespace ft{
     template<
     class Arg1,
     class Arg2,
-    class Result> 
+    class Result>
     struct binary_function
     {
         typedef Arg1    first_argument_type;
@@ -128,7 +128,7 @@ namespace ft{
     //std::less https://en.cppreference.com/w/cpp/utility/functional/less
 
     template<typename T>
-		struct less : 
+		struct less :
         public binary_function<T, T, bool>
 		{
 			bool operator()( const T& lhs, const T& rhs ) const
@@ -136,5 +136,48 @@ namespace ft{
 				return (lhs < rhs);
 			}
 		};
+
+    template<typename T1, typename T2>
+    class treeNode
+    {
+        public :
+            typedef ft::pair<T1, T2>    pair;
+            typedef treeNode<T1, T2> *  pointer;
+            typedef treeNode<T1, T2>    node;
+
+            treeNode(void) : _pair(NULL),_root(NULL), _left(NULL), _right(NULL) {};
+            treeNode(pair const &pair) : _pair(pair),_root(NULL), _left(NULL), _right(NULL) {};
+            treeNode(treeNode const &cpy)
+            {
+                *this = cpy;
+            }
+            treeNode &operator=(treeNode const &cpy)
+            {
+                _pair = cpy._pair;
+                _root = cpy._root;
+                _left = cpy._left;
+                _right = cpy._right;
+
+                return (*this);
+            }
+
+            virtual ~treeNode() {};
+            pointer get_root(void) {return (_root);};
+            pointer get_left(void) {return (_left);};
+            pointer get_right(void) {return (_right);};
+            T1      &get_key(void) {return (_pair.first);};
+            T2      &get_value(void) {return (_pair.second);};
+            pair    &get_pair(void) {return (_pair);};
+
+            void    set_root(pointer node) {_root = node;};
+            void    set_left(pointer node) {_left = node;};
+            void    set_right(pointer node) {_right = node;};
+
+        private :
+            pair		_pair;
+            pointer		_root;
+            pointer		_left;
+            pointer		_right;
+    };
 }
 #endif
