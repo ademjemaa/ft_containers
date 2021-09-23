@@ -144,7 +144,12 @@ namespace ft{
             typedef ft::pair<T1, T2>    pair;
             typedef treeNode<T1, T2> *  pointer;
             typedef treeNode<T1, T2>    node;
-
+        private :
+            pair		_pair;
+            pointer		_root;
+            pointer		_left;
+            pointer		_right;
+        public :
             treeNode(void) : _pair(NULL),_root(NULL), _left(NULL), _right(NULL) {};
             treeNode(pair const &pair) : _pair(pair),_root(NULL), _left(NULL), _right(NULL) {};
             treeNode(treeNode const &cpy)
@@ -173,11 +178,108 @@ namespace ft{
             void    set_left(pointer node) {_left = node;};
             void    set_right(pointer node) {_right = node;};
 
-        private :
-            pair		_pair;
-            pointer		_root;
-            pointer		_left;
-            pointer		_right;
+            pointer leftmost(pointer node)
+            {
+                pointer current;
+
+                while (current->_left != NULL)
+                    current = current->_left;
+                return (current);
+            }
+
+            pointer rightmost(pointer node)
+            {
+                pointer current;
+
+                while (current->_right != NULL)
+                    current = current->_right;
+                return (current);
+            }
     };
+
+    template <typename Tkey, typename Tvalue >
+    class	mapIterator
+    {
+        public:
+            typedef treeNode<Tkey, Tvalue>	        node;
+            typedef node *					        ptr;
+            typedef ft::pair<const Tkey, Tvalue>	value_type;
+            typedef value_type &	                reference;
+            typedef value_type *	                pointer;
+		protected :
+			ptr										_ptr;
+		public :
+			mapIterator(void){};
+			mapIterator(ptr ptr) {_ptr = ptr;}
+			mapIterator(const mapIterator &cpy){_ptr = cpy._ptr;};
+			virtual ~mapIterator(){};
+
+			mapIterator &operator=(mapIterator const &cpy){_ptr = cpy._ptr;}
+			// ++/-- operations in binary tree
+			//https://www.geeksforgeeks.org/inorder-predecessor-successor-given-key-bst/
+			mapIterator operator++()
+			{
+				if (_ptr->get_right())
+					_ptr = leftmost(_ptr->get_right());
+				else
+				{
+					ptr p = _ptr->get_root();
+					while (p && _ptr == p->get_right())
+					{
+						_ptr = p;
+						p = p->get_root();
+					}
+					_ptr = p;
+				}
+				return (*this);
+			}
+			mapIterator operator--()
+			{
+				if (_ptr->get_left())
+				{
+					_ptr = _ptr->get_left();
+					while (_ptr->get_right())
+						_ptr = _ptr->get_right();
+				}
+				else
+					_ptr = _ptr->get_root();
+				return (*this);
+			}
+
+			mapIterator operator++(int)
+			{
+				mapIterator before = *this;
+				++(*this);
+				return (before);
+			}
+
+			mapIterator operator--(int)
+			{
+				mapIterator before = *this;
+				--(*this);
+				return (before);
+			}
+
+			reference operator*()
+			{ 
+				return (_ptr->get_pair()); 
+			}
+											
+			pointer operator->() 
+			{ 
+				return (&(_ptr->get_pair())); 
+			}
+
+			bool operator==(mapIterator const &cmp)
+			{
+				return (_ptr->get_key() == (*cmp).first);
+			}
+	};
+	template <typename Tkey, typename Tvalue >
+    class	mapConstIterator : mapIterator
+	{
+
+	};
+
 }
 #endif
