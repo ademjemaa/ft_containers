@@ -274,12 +274,72 @@ namespace ft{
 			{
 				return (_ptr->get_key() == (*cmp).first);
 			}
+
+            static const bool InputIter = true;
 	};
 	template <typename Tkey, typename Tvalue >
-    class	mapConstIterator : mapIterator
+    class	mapConstIterator : public mapIterator<Tkey, Tvalue>
 	{
 
 	};
+    template <typename Tkey, typename Tvalue >
+    class   mapRevIterator : public mapIterator<Tkey, Tvalue>
+    {
+        using typename  mapIterator<Tkey, Tvalue>::ptr;
+        public :
+            mapRevIterator(void){};
+			mapRevIterator(ptr ptr) {this->_ptr = ptr;}
+			mapRevIterator(const mapRevIterator &cpy){this->_ptr = cpy._ptr;};
+			virtual ~mapRevIterator(){};
+
+			mapRevIterator &operator=(mapRevIterator const &cpy){this->_ptr = cpy._ptr;}
+
+            mapRevIterator operator++()
+			{
+				if (this->_ptr->get_left())
+				{
+					this->_ptr = this->_ptr->get_left();
+					while (this->_ptr->get_right())
+						this->_ptr = this->_ptr->get_right();
+				}
+				else
+					this->_ptr = this->_ptr->get_root();
+				return (*this);
+			}
+
+            mapRevIterator operator--()
+            {
+                if (this->_ptr->get_right())
+					this->_ptr = leftmost(this->_ptr->get_right());
+				else
+				{
+					ptr p = this->_ptr->get_root();
+					while (p && this->_ptr == p->get_right())
+					{
+						this->_ptr = p;
+						p = p->get_root();
+					}
+					this->_ptr = p;
+				}
+				return (*this);
+            }
+    };
+
+    template <typename Tkey, typename Tvalue >
+    class   mapConstRevIterator : public mapRevIterator<Tkey, Tvalue>
+    {
+        
+    };
+
+    template<
+    class Key,
+    class T,
+    class Compare = ft::less<Key>,
+    class Allocator = std::allocator<std::pair<const Key, T> > > 
+    class map
+    {
+        
+    };
 
 }
 #endif
