@@ -261,18 +261,30 @@ namespace ft{
 			}
 
 			reference operator*()
-			{ 
-				return (_ptr->get_pair()); 
+			{
+				return (_ptr->get_pair());
 			}
-											
-			pointer operator->() 
-			{ 
-				return (&(_ptr->get_pair())); 
+
+			pointer operator->()
+			{
+				return (&(_ptr->get_pair()));
 			}
 
 			bool operator==(mapIterator const &cmp)
 			{
 				return (_ptr->get_key() == (*cmp).first);
+			}
+
+			mapIterator leftmost()
+			{
+				_ptr = leftmost(_ptr);
+				return (*this);
+			}
+
+			mapIterator rightmost()
+			{
+				_ptr = rightmost(_ptr);
+				return (*this);
 			}
 
             static const bool InputIter = true;
@@ -328,18 +340,7 @@ namespace ft{
     template <typename Tkey, typename Tvalue >
     class   mapConstRevIterator : public mapRevIterator<Tkey, Tvalue>
     {
-        
-    };
 
-    template<
-    class Key,
-    class T,
-    class Compare = ft::less<Key>,
-    class Allocator = std::allocator<std::pair<const Key, T> > > 
-    class map
-    {
-        
     };
-
 }
 #endif
