@@ -26,4 +26,10 @@ int main()
         std::cout << '\t' << itr->first
              << '\t' << itr->second << '\n';
     }
+
+	std::map<int, int>::iterator en;
+
+	en = one.end();
+	en--;
+	std::cout << "first " << en->first << " second " << en->second << std::endl;
 }

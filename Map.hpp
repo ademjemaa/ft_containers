@@ -93,6 +93,58 @@ namespace ft
 			{
 				return (std::numeric_limits<difference_type>::max() / sizeof(T));
 			}
+
+			mapped_type& operator[] (const key_type& k);
+
+			pair<iterator,bool> insert (const value_type& val);
+
+			iterator insert (iterator position, const value_type& val);
+
+			template <class InputIterator>
+			void insert (InputIterator first, InputIterator last,
+			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL);
+
+			void erase (iterator position);
+
+			size_type erase (const key_type& k);
+
+			void erase (iterator first, iterator last);
+
+			void clear();
+
+			key_compare key_comp() const;
+
+			iterator find (const key_type& k);
+
+			const_iterator find (const key_type& k) const;
+
+			iterator lower_bound (const key_type& k);
+
+			const_iterator lower_bound (const key_type& k) const;
+
+			iterator upper_bound (const key_type& k);
+
+			const_iterator upper_bound (const key_type& k) const;
+
+			pair<iterator,iterator>				equal_range (const key_type& k);
+
+			pair<const_iterator,const_iterator>	equal_range (const key_type& k) const;
+
+			class value_compare :
+			public binary_function<value_type, value_type, bool>
+			{
+				protected :
+					Compare comp;
+
+				public :
+					bool operator() (const value_type& x, const value_type& y) const
+					{
+						return comp(x.first, y.first);
+					}
+
+			};
+
+			value_compare value_comp() const { return (value_compare(Compare())); };
     };
 }
 
