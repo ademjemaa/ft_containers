@@ -65,15 +65,35 @@ namespace ft
 				return (cur.leftmost());
 			}
 
-			iterator end();
+			iterator end()
+			{
+				iterator cur(_node_ptr);
+				return (++(cur.rightmost()));
+			}
 
-			const_iterator end() const;
+			const_iterator end() const
+			{
+				const_iterator cur(_node_ptr);
+				return (++(cur.rightmost()));
+			}
 
-			reverse_iterator rbegin();
+			reverse_iterator rbegin()
+			{
+				reverse_iterator cur(_node_ptr);
+				return (cur.rightmost());
+			}
 
-			const_reverse_iterator rbegin() const;
+			const_reverse_iterator rbegin() const
+			{
+				const_reverse_iterator cur(_node_ptr);
+				return (cur.rightmost());
+			}
 
-			reverse_iterator rend();
+			reverse_iterator rend()
+			{
+				reverse_iterator cur(_node_ptr);
+				return (--(cur.leftmost()));
+			};
 
 			const_reverse_iterator rend() const;
 

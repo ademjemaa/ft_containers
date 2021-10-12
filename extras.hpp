@@ -1,8 +1,9 @@
 #ifndef EXTRAS_HPP
 # define EXTRAS_HPP
 
-#include <stdio.h>
+# include <stdio.h>
 # include <sstream>
+#include <iostream>
 
 namespace ft{
 
@@ -208,9 +209,10 @@ namespace ft{
             typedef value_type *	                pointer;
 		protected :
 			ptr										_ptr;
+            bool									_end;
 		public :
 			mapIterator(void){};
-			mapIterator(ptr ptr) {_ptr = ptr;}
+			mapIterator(ptr ptr) {_ptr = ptr; _end = false;}
 			mapIterator(const mapIterator &cpy){_ptr = cpy._ptr;};
 			virtual ~mapIterator(){};
 
@@ -219,6 +221,18 @@ namespace ft{
 			//https://www.geeksforgeeks.org/inorder-predecessor-successor-given-key-bst/
 			mapIterator operator++()
 			{
+                ptr tmp;
+                tmp = _ptr;
+                while (tmp->get_root())
+                    tmp = tmp->get_root();
+                if (rightmost(tmp) == _ptr)
+                {
+                    mapIterator bot;
+
+					bot._end = true;
+					bot._ptr->set_root(_ptr);
+					return (bot);
+                }
 				if (_ptr->get_right())
 					_ptr = leftmost(_ptr->get_right());
 				else
@@ -272,6 +286,8 @@ namespace ft{
 
 			bool operator==(mapIterator const &cmp)
 			{
+				if (_end == true && cmp._end == true)
+					return (true);
 				return (_ptr->get_key() == (*cmp).first);
 			}
 
