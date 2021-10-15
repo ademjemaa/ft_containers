@@ -14,6 +14,8 @@ namespace ft
     class map
     {
 		public :
+			typedef	treeNode<Key, T> *			node_ptr;
+			typedef	treeNode<Key, T>			node;
 			typedef Key							key_type;
 			typedef T							mapped_type;
 			typedef ft::pair<Key, T>			value_type;
@@ -31,67 +33,70 @@ namespace ft
 			typedef size_t						size_type;
 
 		private :
-			treeNode<Key, T> *			_node_ptr;
+			node_ptr					_root;
 			size_type					_size;
 			key_compare					_comp;
 			allocator_type				_all;
 
 		public :
-			explicit map( const Compare& comp,
-			const Allocator& alloc = Allocator()) : _node_ptr(NULL), _size(0), _comp(comp), _all(alloc) {};
+			explicit map( const key_compare& comp = key_compare(),
+			const Allocator& alloc = Allocator()) : _root(NULL), _size(0), _comp(comp), _all(alloc) {};
 
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last,
 			const key_compare& comp = key_compare(),
 			const allocator_type& alloc = allocator_type(),
-			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : _node_ptr(NULL), _size(0), _comp(comp), _all(alloc) {};
+			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : _root(NULL), _size(0), _comp(comp), _all(alloc) {};
 
-			map (const map& x) : _node_ptr(NULL), _size(0)
+			map (const map& x) : _root(NULL), _size(0)
 			{
 				*this = x;
 			}
 
-			virtual ~map();
+			virtual ~map()
+			{
+
+			}
 
 			iterator begin()
 			{
-				iterator cur(_node_ptr);
+				iterator cur(_root);
 				return (cur.leftmost());
 			}
 
 			const_iterator begin() const
 			{
-				const_iterator cur(_node_ptr);
+				const_iterator cur(_root);
 				return (cur.leftmost());
 			}
 
 			iterator end()
 			{
-				iterator cur(_node_ptr);
+				iterator cur(_root);
 				return (++(cur.rightmost()));
 			}
 
 			const_iterator end() const
 			{
-				const_iterator cur(_node_ptr);
+				const_iterator cur(_root);
 				return (++(cur.rightmost()));
 			}
 
 			reverse_iterator rbegin()
 			{
-				reverse_iterator cur(_node_ptr);
+				reverse_iterator cur(_root);
 				return (cur.rightmost());
 			}
 
 			const_reverse_iterator rbegin() const
 			{
-				const_reverse_iterator cur(_node_ptr);
+				const_reverse_iterator cur(_root);
 				return (cur.rightmost());
 			}
 
 			reverse_iterator rend()
 			{
-				reverse_iterator cur(_node_ptr);
+				reverse_iterator cur(_root);
 				return (--(cur.leftmost()));
 			};
 
@@ -114,7 +119,29 @@ namespace ft
 				return (std::numeric_limits<difference_type>::max() / sizeof(T));
 			}
 
-			mapped_type& operator[] (const key_type& k);
+			mapped_type& operator[] (const key_type& k)
+			{
+				node_ptr	found = find_node(k);
+
+				if (_size == 0)
+				{
+					value_type	new_root(value_type(k, mapped_type()));
+					_size++;
+					node_ptr	new_node = new node(new_root);
+					_root = new_node;
+					return (_root->get_value());
+				}
+				if (found->get_key() == k)
+					return (found->get_value());
+				else
+				{
+					value_type	new_node(value_type(k, mapped_type()));
+					_size++;
+					return (insert_node(found, new_node)->get_value());
+				}
+				
+				return (_root->get_value());
+			}
 
 			pair<iterator,bool> insert (const value_type& val);
 
@@ -165,6 +192,61 @@ namespace ft
 			};
 
 			value_compare value_comp() const { return (value_compare(Compare())); };
+
+		private :
+
+			node_ptr	find_node(const key_type &k)
+			{
+				node_ptr cur = _root;
+
+				while (cur != NULL && cur->get_key() != k)
+				{
+					if (_comp(k, cur->get_key()))
+					{
+						if (cur->get_left() != NULL)
+							cur = cur->get_left();
+						else
+							return (cur);
+					}
+					else
+					{
+						if (cur->get_right() != NULL)
+							cur = cur->get_right();
+						else
+							return (cur);
+					}
+				}
+				return (cur);
+			}
+
+			node_ptr	insert_node(node_ptr root, value_type &k)
+			{
+				if (_comp(k.first, root->get_key()))
+				{
+					if (root->get_left() != NULL)
+						insert_node(root->get_left(), k);
+					else
+					{
+						node_ptr 	inser = new node (k);
+						root->set_left(inser);
+						inser->set_root(root);
+						return (inser);
+					}
+				}
+				else
+				{
+					if (root->get_right() != NULL)
+						insert_node(root->get_right(), k);
+					else
+					{
+						node_ptr 	inser = new node (k);
+						root->set_right(inser);
+						inser->set_root(root);
+						return (inser);
+					}
+				}
+				return (NULL);
+			}
     };
 }
 

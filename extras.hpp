@@ -227,15 +227,15 @@ namespace ft{
                     tmp = tmp->get_root();
                 if (rightmost(tmp) == _ptr)
                 {
-                    mapIterator bot;
+                    ptr bot;
 
-					bot._end = true;
-					bot._ptr->set_root(_ptr);
-					return (bot);
+					bot->set_root(_ptr);
+					_ptr = bot;
+                    _end = true;
                 }
-				if (_ptr->get_right())
+				else if (_ptr->get_right())
 					_ptr = leftmost(_ptr->get_right());
-				else
+				else if (_end == false)
 				{
 					ptr p = _ptr->get_root();
 					while (p && _ptr == p->get_right())
@@ -249,6 +249,12 @@ namespace ft{
 			}
 			mapIterator operator--()
 			{
+                if (_end == true)
+                {
+                    _ptr = _ptr->get_root();
+                    _end = false;
+                    return (*this);
+                }
 				if (_ptr->get_left())
 				{
 					_ptr = _ptr->get_left();
