@@ -146,7 +146,6 @@ namespace ft
 			pair<iterator,bool> insert (const value_type& val)
 			{
 				node_ptr found = find_node(val.first);
-				
 				if (_size == 0)
 					(*this)[val.first] = val.second;
 				else if (found->get_key() == val.first)
@@ -163,11 +162,29 @@ namespace ft
 				return (pair<iterator, bool>(begin(), true));
 			};
 
-			iterator insert (iterator position, const value_type& val);
+			iterator insert (iterator position, const value_type& val)
+			{
+				if (_size == 0)
+					return (insert(val).first);
+				if (_size > 0 && find_node(val.first)->get_key() != val.first)
+				{
+					value_type tmp = val;
+					insert_node(find_node((*position).first), tmp);
+				}
+				iterator it2(find_node(val.first));
+				return (it2);
+			};
 
 			template <class InputIterator>
 			void insert (InputIterator first, InputIterator last,
-			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL);
+			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL)
+			{
+				while (first != last)
+				{
+					insert(*first);
+					first++;
+				}
+			}
 
 			void erase (iterator position);
 

@@ -306,6 +306,8 @@ namespace ft{
 			{
 				if (_end == true && cmp._end == true)
 					return (true);
+                else if (_end == true || cmp._end == true)
+                    return (false);
 				return (_ptr->get_key() == cmp._ptr->get_key());
 			}
 
