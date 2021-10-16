@@ -181,7 +181,7 @@ namespace ft{
 
             pointer leftmost(pointer node)
             {
-                pointer current;
+                pointer current = node;
 
                 while (current->_left != NULL)
                     current = current->_left;
@@ -190,7 +190,7 @@ namespace ft{
 
             pointer rightmost(pointer node)
             {
-                pointer current;
+                pointer current = node;
 
                 while (current->_right != NULL)
                     current = current->_right;
@@ -204,28 +204,40 @@ namespace ft{
         public:
             typedef treeNode<Tkey, Tvalue>	        node;
             typedef node *					        ptr;
-            typedef ft::pair<const Tkey, Tvalue>	value_type;
+            typedef ft::pair<Tkey, Tvalue>	        value_type;
             typedef value_type &	                reference;
             typedef value_type *	                pointer;
 		protected :
 			ptr										_ptr;
+            ptr                                     _root;
             bool									_end;
 		public :
 			mapIterator(void){};
-			mapIterator(ptr ptr) {_ptr = ptr; _end = false;}
-			mapIterator(const mapIterator &cpy){_ptr = cpy._ptr;};
+			mapIterator(ptr ptr) {_ptr = ptr; _end = false; _root = ptr;}
+			mapIterator(const mapIterator &cpy)
+            {
+                _root = cpy._root;
+                _ptr = cpy._ptr;
+                _end = cpy._end;
+            }
 			virtual ~mapIterator(){};
 
-			mapIterator &operator=(mapIterator const &cpy){_ptr = cpy._ptr;}
+			mapIterator &operator=(mapIterator const &cpy)
+            {
+                _end = cpy._end;
+                _root = cpy._root;
+                _ptr = cpy._ptr;
+                return (*this);
+            }
 			// ++/-- operations in binary tree
 			//https://www.geeksforgeeks.org/inorder-predecessor-successor-given-key-bst/
 			mapIterator operator++()
 			{
                 ptr tmp;
-                tmp = _ptr;
-                while (tmp->get_root())
+                tmp = _root;
+                while (tmp->get_root() != NULL)
                     tmp = tmp->get_root();
-                if (rightmost(tmp) == _ptr)
+                if (tmp->rightmost(tmp) == _ptr)
                 {
                     ptr bot;
 
@@ -234,7 +246,7 @@ namespace ft{
                     _end = true;
                 }
 				else if (_ptr->get_right())
-					_ptr = leftmost(_ptr->get_right());
+					_ptr = _ptr->leftmost(_ptr->get_right());
 				else if (_end == false)
 				{
 					ptr p = _ptr->get_root();
@@ -294,18 +306,25 @@ namespace ft{
 			{
 				if (_end == true && cmp._end == true)
 					return (true);
-				return (_ptr->get_key() == (*cmp).first);
+				return (_ptr->get_key() == cmp._ptr->get_key());
+			}
+
+            bool operator!=(mapIterator const &cmp)
+			{
+				return (!(*this == cmp));
 			}
 
 			mapIterator leftmost()
 			{
-				_ptr = leftmost(_ptr);
+				while (_ptr->get_left() != NULL)
+                    _ptr = _ptr->get_left();
 				return (*this);
 			}
 
 			mapIterator rightmost()
 			{
-				_ptr = rightmost(_ptr);
+				while (_ptr->get_right() != NULL)
+                    _ptr = _ptr->get_right();
 				return (*this);
 			}
 

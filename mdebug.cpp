@@ -10,12 +10,22 @@ int main()
 	std::map<int, int> one;
 	ft::map<int, int> three;
 
+	three.insert(ft::pair<int, int>(5, 999));
 	three[1] = 45;
 	three[2] = 66;
 	three[3] = 77;
-	std::cout << three[1] << std::endl;
+	std::cout << three[5] << std::endl;
 	std::cout << three[2] << std::endl;
 	std::cout << three[3] << std::endl;
+	three[-1] = 50;
+	ft::map<int, int>::iterator it;
+
+	for (it = three.begin(); it != three.end(); it++)
+	{
+			std::cout << *it << std::endl;
+	}
+	--it;
+	std::cout << *it << std::endl;
 	one.insert(std::pair<int, int>(1, 40));
 	one.insert(std::pair<int, int>(0, 50));
 	one.insert(std::pair<int, int>(5, 55));

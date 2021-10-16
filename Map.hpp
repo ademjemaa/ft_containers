@@ -143,7 +143,25 @@ namespace ft
 				return (_root->get_value());
 			}
 
-			pair<iterator,bool> insert (const value_type& val);
+			pair<iterator,bool> insert (const value_type& val)
+			{
+				node_ptr found = find_node(val.first);
+				
+				if (_size == 0)
+					(*this)[val.first] = val.second;
+				else if (found->get_key() == val.first)
+				{
+					iterator	it(found);
+					return (pair<iterator, bool>(it, false));
+				}
+				else
+				{
+					(*this)[val.first] = val.second;
+					iterator it(find_node(val.first));
+					return (pair<iterator, bool>(it, true));
+				}
+				return (pair<iterator, bool>(begin(), true));
+			};
 
 			iterator insert (iterator position, const value_type& val);
 
