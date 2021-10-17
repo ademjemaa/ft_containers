@@ -27,7 +27,7 @@ int main()
 
 
 	std::cout << *it << std::endl;
-	//three.insert(it, ft::pair<int, int>(666,666));
+	three.insert(it, ft::pair<int, int>(666,666));
 	for (it = three.begin(); it != three.end(); it++);
 	--it;
 	three.insert(it, ft::pair<int, int>(33, 1337));

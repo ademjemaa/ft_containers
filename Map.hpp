@@ -72,7 +72,9 @@ namespace ft
 
 			iterator end()
 			{
-				iterator cur(_root);
+				node_ptr	tmp;
+				tmp = _root;
+				iterator cur(tmp);
 				return (++(cur.rightmost()));
 			}
 
@@ -169,6 +171,7 @@ namespace ft
 				if (_size > 0 && find_node(val.first)->get_key() != val.first)
 				{
 					value_type tmp = val;
+					_size++;
 					insert_node(find_node((*position).first), tmp);
 				}
 				iterator it2(find_node(val.first));
