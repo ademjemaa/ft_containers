@@ -55,7 +55,7 @@ namespace ft
 
 			virtual ~map()
 			{
-
+				clear();
 			}
 
 			iterator begin()
