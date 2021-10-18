@@ -25,7 +25,10 @@ int main()
 
 	three[-1] = 50;
 
-
+	ft::map<int, int>::iterator rm;
+	rm = three.begin();
+	rm++;
+	three.erase(rm);
 	std::cout << *it << std::endl;
 	three.insert(it, ft::pair<int, int>(666,666));
 	for (it = three.begin(); it != three.end(); it++);
@@ -47,11 +50,19 @@ int main()
 	{
 		std::cout << *it2 << std::endl;
 	}
+	three.erase(3);
+	ft::map<int, int>::iterator trimo;
+	std::cout << "key 3 deleted" << std::endl;
+	trimo = three.begin();
+	for (;trimo != three.end(); trimo++)
+		std::cout << *trimo << std::endl;
 	one.insert(std::pair<int, int>(1, 40));
 	one.insert(std::pair<int, int>(0, 50));
 	one.insert(std::pair<int, int>(5, 55));
 	one.insert(std::pair<int, int>(10, 60));
 	one.insert(std::pair<int, int>(12, 55));
+	three.erase(three.begin(), three.end());
+	std::cout << three.size() << std::endl;
 	ft::treeNode<int, int> tot(ft::make_pair<int, int>(1, 55));
 	ft::treeNode<int, int> tot2(ft::make_pair<int, int>(5, 505));
 

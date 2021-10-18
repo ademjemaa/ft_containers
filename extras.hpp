@@ -178,6 +178,7 @@ namespace ft{
             void    set_root(pointer node) {_root = node;};
             void    set_left(pointer node) {_left = node;};
             void    set_right(pointer node) {_right = node;};
+            void    set_pair(pair pr) {_pair = pr; }
 
             pointer leftmost(pointer node)
             {
@@ -309,8 +310,6 @@ namespace ft{
 			{
 				if (_end == true && cmp._end == true)
 					return (true);
-                else if (_end == false || cmp._end == false)
-                    return (false);
 				return (_ptr->get_key() == cmp._ptr->get_key());
 			}
 

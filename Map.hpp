@@ -189,13 +189,122 @@ namespace ft
 				}
 			}
 
-			void erase (iterator position);
+			void erase (iterator position)
+			{
+				node_ptr to_erase = find_node((*position).first);
+				node_ptr root = to_erase->get_root();
 
-			size_type erase (const key_type& k);
+				bool side;
+				if (_size == 1)
+				{
+					delete to_erase;
+					_size--;
+					return ;
+				}
+				if (to_erase->get_root() != NULL && to_erase->get_root()->get_right() == to_erase)
+					side = true;
+				else
+					side = false;
+				if (to_erase->get_right() == NULL && to_erase->get_left() == NULL)
+				{
+					if (to_erase->get_root()->get_right() == to_erase)
+						to_erase->get_root()->set_right(NULL);
+					else if (to_erase->get_root()->get_left() == to_erase)
+						to_erase->get_root()->set_left(NULL);
+					delete to_erase;
+					_size--;
+				}
+				else if (to_erase->get_left() == NULL)
+				{
+					if (to_erase == _root)
+					{
+						_root = to_erase->get_right();
+						to_erase->get_right()->set_root(NULL);
+					}
+					else if (to_erase->get_root()->get_right() == to_erase)
+					{
+						to_erase->get_root()->set_right(to_erase->get_right());
+						to_erase->get_right()->set_root(to_erase->get_root());
+					}
+					else
+					{
+						to_erase->get_root()->set_left(to_erase->get_right());
+						to_erase->get_right()->set_root(to_erase->get_root());
+					}
+					delete to_erase;
+					_size--;
+				}
+				else if (to_erase->get_right() == NULL)
+				{
+					if (to_erase->get_root()->get_right() == to_erase)
+					{
+						to_erase->get_root()->set_right(to_erase->get_left());
+						to_erase->get_left()->set_root(to_erase->get_root());
+					}
+					else
+					{
+						to_erase->get_root()->set_left(to_erase->get_left());
+						to_erase->get_left()->set_root(to_erase->get_root());
+					}
+					delete to_erase;
+					_size--;
+				}
+				else
+				{
+					node_ptr succ;
+					node_ptr succParent;
 
-			void erase (iterator first, iterator last);
+					succParent = to_erase;
+					succ = to_erase->get_right();
 
-			void clear();
+					while (succ->get_left() != NULL)
+					{
+						succParent = succ;
+						succ = succ->get_left();
+					}
+					if (succParent != to_erase)
+					{
+						succParent->set_left(succ->get_right());
+						succParent->get_left()->set_root(succParent);
+					}
+					else
+					{
+						succParent->set_right(succ->get_right());
+						succParent->get_right()->set_root(succParent);
+					}
+					to_erase->set_pair(succ->get_pair());
+					delete succ;
+					_size--;
+				}
+			}
+
+			size_type erase (const key_type& k)
+			{
+				iterator it(find_node(k));
+
+				if ((it)->first == k)
+					erase(it);
+				return (0);
+			}
+
+			void erase (iterator first, iterator last)
+			{
+				while (first != last)
+				{
+					erase(first);
+					first++;
+				}
+				
+			}
+
+			void clear()
+			{
+				while (_size != 0)
+				{
+					erase(begin());
+				}
+				
+			}
 
 			key_compare key_comp() const;
 
