@@ -46,11 +46,14 @@ namespace ft
 			map (InputIterator first, InputIterator last,
 			const key_compare& comp = key_compare(),
 			const allocator_type& alloc = allocator_type(),
-			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : _root(NULL), _size(0), _comp(comp), _all(alloc) {};
+			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : _root(NULL), _size(0), _comp(comp), _all(alloc)
+			{
+				insert(first, last);
+			}
 
 			map (const map& x) : _root(NULL), _size(0)
 			{
-				*this = x;
+				insert(x.begin(), x.end());
 			}
 
 			virtual ~map()
@@ -306,23 +309,74 @@ namespace ft
 				
 			}
 
-			key_compare key_comp() const;
+			key_compare key_comp() const
+			{
+				return (key_compare());
+			}
 
-			iterator find (const key_type& k);
+			iterator find (const key_type& k)
+			{
+				node_ptr it(find_node(k));
 
-			const_iterator find (const key_type& k) const;
+				if (it->get_key() != k)
+					return (end());
+				return (iterator(it));
+			}
 
-			iterator lower_bound (const key_type& k);
+			const_iterator find (const key_type& k) const
+			{
+				node_ptr it(find_node(k));
 
-			const_iterator lower_bound (const key_type& k) const;
+				if (it->get_key() != k)
+					return (end());
+				return (const_iterator(it));
+			}
 
-			iterator upper_bound (const key_type& k);
+			iterator lower_bound (const key_type& k)
+			{
+				iterator it = begin();
 
-			const_iterator upper_bound (const key_type& k) const;
+				while (_comp((*it).first, k) && it != end())
+					it++;
+				return (it);
+			}
 
-			pair<iterator,iterator>				equal_range (const key_type& k);
+			const_iterator lower_bound (const key_type& k) const
+			{
+				const_iterator it = begin();
 
-			pair<const_iterator,const_iterator>	equal_range (const key_type& k) const;
+				while (_comp((*it).first, k) && it != end())
+					it++;
+				return (it);
+			}
+
+			iterator upper_bound (const key_type& k)
+			{
+				iterator it = lower_bound(k);
+
+				if ((*it).first == k && it != end())
+					it++;
+				return (it);
+			}
+
+			const_iterator upper_bound (const key_type& k) const
+			{
+				const_iterator it = lower_bound(k);
+
+				if ((*it).first == k && it != end())
+					it++;
+				return (it);
+			}
+
+			pair<iterator,iterator>				equal_range (const key_type& k)
+			{
+				return (pair<iterator, iterator>(lower_bound(k), upper_bound(k)));
+			}
+
+			pair<const_iterator,const_iterator>	equal_range (const key_type& k) const
+			{
+				return (pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));
+			}
 
 			class value_compare :
 			public binary_function<value_type, value_type, bool>

@@ -68,9 +68,12 @@ int main()
 
 	std::cout << tot.get_pair() << std::endl;
 	tot.set_right(&tot2);
+	if (ft::is_integral<bool>::value)
+		std::cout << "value is true " << std::endl;
 	std::cout << (tot.get_right())->get_pair() << std::endl;
 	std::map<int, int>::iterator itr;
-
+	std::cout << "lower bound of 4 " << *(four.lower_bound(4)) << std::endl;
+	std::cout << "lower bound of 5 " << *(four.upper_bound(5)) << std::endl;
 	for (itr = one.begin(); itr != one.end(); ++itr) {
         std::cout << '\t' << itr->first
              << '\t' << itr->second << '\n';
