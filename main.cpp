@@ -1,6 +1,8 @@
 #include "Vector.hpp"
 #include <vector>
 
+void	map_debug(void);
+
 void	test_assign(void)
 {
 	ft::Vector<int> vec;
@@ -25,4 +27,5 @@ void	test_assign(void)
 int main()
 {
 	test_assign();
+	map_debug();
 }

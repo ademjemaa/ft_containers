@@ -4,13 +4,14 @@
 #include <map>
 #include "Map.hpp"
 
-int main()
+void map_debug(void)
 {
+	
 	ft::pair<int, std::string>	t1(ft::make_pair<int, std::string>(1, "string"));
 	std::map<int, int> one;
 	ft::map<int, int> three;
 	ft::map<int, int>::iterator it;
-
+	it = three.end();
 
 	it = three.insert(NULL, ft::pair<int, int>(1, 55));
 
@@ -26,13 +27,20 @@ int main()
 	three[-1] = 50;
 
 	ft::map<int, int>::iterator rm;
+		std::cout << *it << std::endl;
 	rm = three.begin();
 	rm++;
 	three.erase(rm);
-	std::cout << *it << std::endl;
+	std::cout << "no way wd " << std::endl;
+
+	it = three.end();
+	it--;
+	std::cout << "bro plz " << std::endl;
 	three.insert(it, ft::pair<int, int>(666,666));
 	for (it = three.begin(); it != three.end(); it++);
+	std::cout << "ici " << std::endl;
 	--it;
+	std::cout << "excuse me " << std::endl;
 	three.insert(it, ft::pair<int, int>(33, 1337));
 	std::cout << three.size() << std::endl;
 	std::cout << "map three : " << std::endl;
@@ -50,6 +58,7 @@ int main()
 	{
 		std::cout << *it2 << std::endl;
 	}
+	std::cout << "no way " << std::endl;
 	three.erase(3);
 	ft::map<int, int>::iterator trimo;
 	std::cout << "key 3 deleted" << std::endl;
@@ -84,4 +93,6 @@ int main()
 	en = one.end();
 	en--;
 	std::cout << "first " << en->first << " second " << en->second << std::endl;
+	std::cout << "last " << std::endl;
+	
 }

@@ -78,6 +78,8 @@ namespace ft
 				node_ptr	tmp;
 				tmp = _root;
 				iterator cur(tmp);
+				if (_size == 0)
+					return (cur);
 				return (++(cur.rightmost()));
 			}
 
@@ -195,7 +197,6 @@ namespace ft
 			void erase (iterator position)
 			{
 				node_ptr to_erase = find_node((*position).first);
-				node_ptr root = to_erase->get_root();
 
 				bool side;
 				if (_size == 1)

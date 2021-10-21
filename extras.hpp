@@ -72,7 +72,8 @@ namespace ft{
                 this->second = p.second;
             }
             //https://en.cppreference.com/w/cpp/utility/pair/operator%3D
-            pair& operator=( const pair& other )
+            template<class U1, class U2>
+            pair& operator=( const pair<U1, U2>& other )
             {
                 this->first = other.first;
                 this->second = other.second;
@@ -176,7 +177,7 @@ namespace ft{
             pointer		_left;
             pointer		_right;
         public :
-            treeNode(void) : _pair(NULL),_root(NULL), _left(NULL), _right(NULL) {};
+            treeNode(void) : _root(NULL), _left(NULL), _right(NULL) {};
             treeNode(pair const &pair) : _pair(pair),_root(NULL), _left(NULL), _right(NULL) {};
             treeNode(treeNode const &cpy)
             {
@@ -188,7 +189,6 @@ namespace ft{
                 _root = cpy._root;
                 _left = cpy._left;
                 _right = cpy._right;
-
                 return (*this);
             }
 
@@ -238,33 +238,43 @@ namespace ft{
             ptr                                     _root;
             bool									_end;
 		public :
-			mapIterator(void){};
+			mapIterator(void) : _ptr(NULL), _root(NULL) ,_end(false) {};
 			mapIterator(ptr ptr) {_ptr = ptr; _end = false; _root = ptr;}
 			mapIterator(const mapIterator &cpy)
             {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
                 _root = cpy._root;
-                _ptr = cpy._ptr;
                 _end = cpy._end;
             }
-			virtual ~mapIterator(){};
+			virtual ~mapIterator()
+            {
+                if (_end == true)
+                    delete _ptr;
+            }
 
 			mapIterator &operator=(mapIterator const &cpy)
             {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
                 _end = cpy._end;
                 _root = cpy._root;
-                _ptr = cpy._ptr;
                 return (*this);
             }
 			// ++/-- operations in binary tree
 			//https://www.geeksforgeeks.org/inorder-predecessor-successor-given-key-bst/
-			mapIterator operator++()
+			mapIterator operator ++()
 			{
                 ptr tmp;
                 tmp = _ptr;
 
                 if (_root->rightmost(_root) == tmp)
                 {
-                    ptr bot;
+                    ptr bot = new node();
 					bot->set_root(_ptr);
 					_ptr = bot;
                     _end = true;
@@ -288,12 +298,14 @@ namespace ft{
 				}
 				return (*this);
 			}
-			mapIterator operator--()
+			mapIterator operator --()
 			{
                 if (_end == true)
                 {
+                    ptr tmp = _ptr;
                     _ptr = _ptr->get_root();
                     _end = false;
+                    delete tmp;
                     return (*this);
                 }
 				if (_ptr->get_left())
