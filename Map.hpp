@@ -50,10 +50,23 @@ namespace ft
 			{
 				insert(first, last);
 			}
-
-			map (const map& x) : _root(NULL), _size(0)
+			map	&operator=(map const &cpy)
 			{
-				insert(x.begin(), x.end());
+				this->clear();
+				const_iterator it = cpy.begin();
+				if (cpy.size() != 0)
+				{
+					while (it != cpy.end())
+					{
+						insert(*it);
+						it++;
+					}
+				}
+				return (*this);
+			}
+			map (map const &cpy)
+			{
+				*this = cpy;
 			}
 
 			virtual ~map()
@@ -161,9 +174,8 @@ namespace ft
 					return (pair<iterator, bool>(it, false));
 				}
 				else
-				{
-					(*this)[val.first] = val.second;
-					iterator it(find_node(val.first));
+				{					
+					iterator it(insert_node(_root, val));
 					return (pair<iterator, bool>(it, true));
 				}
 				return (pair<iterator, bool>(begin(), true));
@@ -183,7 +195,7 @@ namespace ft
 				return (it2);
 			};
 
-			template <class InputIterator>
+			template <typename InputIterator>
 			void insert (InputIterator first, InputIterator last,
 			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL)
 			{
@@ -421,7 +433,7 @@ namespace ft
 				return (cur);
 			}
 
-			node_ptr	insert_node(node_ptr root, value_type &k)
+			node_ptr	insert_node(node_ptr root, const value_type &k)
 			{
 				if (_comp(k.first, root->get_key()))
 				{

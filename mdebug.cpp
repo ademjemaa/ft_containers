@@ -56,6 +56,7 @@ void map_debug(void)
 	std::cout << four.size() << std::endl;
 	for (it2 = four.begin(); it2 != four.end(); it2++)
 	{
+		std::cout << "huh ? " << std::endl;
 		std::cout << *it2 << std::endl;
 	}
 	std::cout << "no way " << std::endl;

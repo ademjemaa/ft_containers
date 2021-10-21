@@ -90,8 +90,8 @@ static void	test_non_member_ope_std()
 static void	test_non_member_ope()
 {
 
-	ft::Stack<int>	st_nums_one;
-	ft::Stack<int>	st_nums_two;
+	ft::stack<int>	st_nums_one;
+	ft::stack<int>	st_nums_two;
 
 	st_nums_one.push(0);
 	st_nums_one.push(1);
@@ -206,7 +206,7 @@ static void	test_push_std()
 static void	test_push()
 {
 
-	ft::Stack<int>	st_nums;
+	ft::stack<int>	st_nums;
 	std::cout << "ft::stack<int> st_nums;" << std::endl << std::endl;
 
 	// TEST EMPTY FUNCTION
@@ -248,7 +248,7 @@ static void	test_push()
 	test_push_std();
 }
 
-int main()
+void  stack_debug(void)
 {
     test_non_member_ope();
     test_push();

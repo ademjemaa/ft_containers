@@ -2,6 +2,8 @@ NAME	=	containers
 
 SRCS	=	main.cpp \
 			mdebug.cpp \
+			debug.cpp \
+			sdebug.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 

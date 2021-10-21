@@ -372,9 +372,151 @@ namespace ft{
             static const bool InputIter = true;
 	};
 	template <typename Tkey, typename Tvalue >
-    class	mapConstIterator : public mapIterator<Tkey, Tvalue>
+    class	mapConstIterator
 	{
+        public:
+            typedef treeNode<Tkey, Tvalue>	        node;
+            typedef node *					        ptr;
+            typedef ft::pair<Tkey, Tvalue>	        value_type;
+            typedef value_type &	                reference;
+            typedef value_type *	                pointer;
+		protected :
+			ptr										_ptr;
+            ptr                                     _root;
+            bool									_end;
+		public :
+			mapConstIterator(void) : _ptr(NULL), _root(NULL) ,_end(false) {};
+			mapConstIterator(ptr ptr) {_ptr = ptr; _end = false; _root = ptr;}
+			mapConstIterator(const mapConstIterator &cpy)
+            {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
+                _root = cpy._root;
+                _end = cpy._end;
+            }
+			virtual ~mapConstIterator()
+            {
+                if (_end == true)
+                    delete _ptr;
+            }
 
+			mapConstIterator &operator=(mapConstIterator const &cpy)
+            {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
+                _end = cpy._end;
+                _root = cpy._root;
+                return (*this);
+            }
+			// ++/-- operations in binary tree
+			//https://www.geeksforgeeks.org/inorder-predecessor-successor-given-key-bst/
+			mapConstIterator operator ++()
+			{
+                ptr tmp;
+                tmp = _ptr;
+
+                if (_root->rightmost(_root) == tmp)
+                {
+                    ptr bot = new node();
+					bot->set_root(_ptr);
+					_ptr = bot;
+                    _end = true;
+                    return (*this);
+                }
+				else if (_ptr->get_right())
+                {
+					_ptr = _ptr->leftmost(_ptr->get_right());
+                    _end = false;
+                    return (*this);
+                }
+				else if (_end == false)
+				{
+					ptr p = _ptr->get_root();
+					while (p && _ptr == p->get_right())
+					{
+						_ptr = p;
+						p = p->get_root();
+					}
+					_ptr = p;
+				}
+				return (*this);
+			}
+			mapConstIterator operator --()
+			{
+                if (_end == true)
+                {
+                    ptr tmp = _ptr;
+                    _ptr = _ptr->get_root();
+                    _end = false;
+                    delete tmp;
+                    return (*this);
+                }
+				if (_ptr->get_left())
+				{
+					_ptr = _ptr->get_left();
+					while (_ptr->get_right())
+						_ptr = _ptr->get_right();
+				}
+				else
+					_ptr = _ptr->get_root();
+				return (*this);
+			}
+
+			mapConstIterator operator++(int)
+			{
+				mapConstIterator before = *this;
+				++(*this);
+				return (before);
+			}
+
+			mapConstIterator operator--(int)
+			{
+				mapConstIterator before = *this;
+				--(*this);
+				return (before);
+			}
+
+			reference operator*()
+			{
+				return (_ptr->get_pair());
+			}
+
+			pointer operator->()
+			{
+				return (&(_ptr->get_pair()));
+			}
+
+			bool operator==(mapConstIterator const &cmp)
+			{
+				if (_end == true && cmp._end == true)
+					return (true);
+				return (_ptr->get_key() == cmp._ptr->get_key());
+			}
+
+            bool operator!=(mapConstIterator const &cmp)
+			{
+				return (!(*this == cmp));
+			}
+
+			mapConstIterator leftmost()
+			{
+				while (_ptr->get_left() != NULL)
+                    _ptr = _ptr->get_left();
+				return (*this);
+			}
+
+			mapConstIterator rightmost()
+			{
+				while (_ptr->get_right() != NULL)
+                    _ptr = _ptr->get_right();
+				return (*this);
+			}
+
+            static const bool InputIter = true;
 	};
     template <typename Tkey, typename Tvalue >
     class   mapRevIterator : public mapIterator<Tkey, Tvalue>
