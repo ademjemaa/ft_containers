@@ -36,13 +36,17 @@ namespace ft
 			node_ptr					_root;
 			size_type					_size;
 			key_compare					_comp;
+			bool						_empty;
 			allocator_type				_all;
 
 		public :
 			explicit map( const key_compare& comp = key_compare(),
-			const Allocator& alloc = Allocator()) : _root(NULL), _size(0), _comp(comp), _all(alloc) {};
+			const Allocator& alloc = Allocator()) : _root(NULL), _size(0), _comp(comp), _empty(true), _all(alloc)	 {
+				_size = 0;
+				_empty = true;
+			}; 
 
-			template <class InputIterator>
+			template <typename InputIterator>
 			map (InputIterator first, InputIterator last,
 			const key_compare& comp = key_compare(),
 			const allocator_type& alloc = allocator_type(),
@@ -50,21 +54,17 @@ namespace ft
 			{
 				insert(first, last);
 			}
-			map	&operator=(map const &cpy)
+			map	&operator=(const map &cpy)
 			{
-				this->clear();
-				const_iterator it = cpy.begin();
+				if (_size != 0)
+					this->clear();
 				if (cpy.size() != 0)
 				{
-					while (it != cpy.end())
-					{
-						insert(*it);
-						it++;
-					}
+					insert(cpy.begin(), cpy.end());
 				}
 				return (*this);
 			}
-			map (map const &cpy)
+			map (map const &cpy) : _root(NULL), _size(0), _comp(key_compare()), _all(allocator_type())
 			{
 				*this = cpy;
 			}
@@ -176,6 +176,7 @@ namespace ft
 				else
 				{					
 					iterator it(insert_node(_root, val));
+					_size++;
 					return (pair<iterator, bool>(it, true));
 				}
 				return (pair<iterator, bool>(begin(), true));
@@ -209,7 +210,6 @@ namespace ft
 			void erase (iterator position)
 			{
 				node_ptr to_erase = find_node((*position).first);
-
 				bool side;
 				if (_size == 1)
 				{
@@ -314,12 +314,8 @@ namespace ft
 			}
 
 			void clear()
-			{
-				while (_size != 0)
-				{
-					erase(begin());
-				}
-				
+			{	
+				erase(begin(), end());
 			}
 
 			key_compare key_comp() const
@@ -441,7 +437,7 @@ namespace ft
 						insert_node(root->get_left(), k);
 					else
 					{
-						node_ptr 	inser = new node (k);
+						node_ptr 	inser = new node(k);
 						root->set_left(inser);
 						inser->set_root(root);
 						return (inser);
@@ -453,7 +449,7 @@ namespace ft
 						insert_node(root->get_right(), k);
 					else
 					{
-						node_ptr 	inser = new node (k);
+						node_ptr 	inser = new node(k);
 						root->set_right(inser);
 						inser->set_root(root);
 						return (inser);

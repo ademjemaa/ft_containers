@@ -258,7 +258,11 @@ namespace ft{
 			mapIterator &operator=(mapIterator const &cpy)
             {
                 if (cpy._end == true)
+                {
+                    if (_end == true)
+                       delete _ptr;
                     _ptr = new node(*(cpy._ptr));
+                }
                 else
                     _ptr = cpy._ptr;
                 _end = cpy._end;
@@ -379,6 +383,7 @@ namespace ft{
             typedef node *					        ptr;
             typedef ft::pair<Tkey, Tvalue>	        value_type;
             typedef value_type &	                reference;
+            typedef value_type const &              constReference;
             typedef value_type *	                pointer;
 		protected :
 			ptr										_ptr;
@@ -386,7 +391,8 @@ namespace ft{
             bool									_end;
 		public :
 			mapConstIterator(void) : _ptr(NULL), _root(NULL) ,_end(false) {};
-			mapConstIterator(ptr ptr) {_ptr = ptr; _end = false; _root = ptr;}
+			mapConstIterator(ptr ptr) {
+            _ptr = ptr; _end = false; _root = ptr;}
 			mapConstIterator(const mapConstIterator &cpy)
             {
                 if (cpy._end == true)
@@ -480,12 +486,12 @@ namespace ft{
 				return (before);
 			}
 
-			reference operator*()
+			constReference operator*() const
 			{
 				return (_ptr->get_pair());
 			}
 
-			pointer operator->()
+			pointer operator->() const
 			{
 				return (&(_ptr->get_pair()));
 			}
