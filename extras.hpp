@@ -525,52 +525,309 @@ namespace ft{
             static const bool InputIter = true;
 	};
     template <typename Tkey, typename Tvalue >
-    class   mapRevIterator : public mapIterator<Tkey, Tvalue>
+    class   mapRevIterator
     {
-        using typename  mapIterator<Tkey, Tvalue>::ptr;
+        public:
+            typedef treeNode<Tkey, Tvalue>	        node;
+            typedef node *					        ptr;
+            typedef ft::pair<Tkey, Tvalue>	        value_type;
+            typedef value_type &	                reference;
+            typedef value_type const &              constReference;
+            typedef value_type *	                pointer;
+		protected :
+			ptr										_ptr;
+            ptr                                     _root;
+            bool									_end;
         public :
             mapRevIterator(void){};
-			mapRevIterator(ptr ptr) {this->_ptr = ptr;}
-			mapRevIterator(const mapRevIterator &cpy){this->_ptr = cpy._ptr;};
-			virtual ~mapRevIterator(){};
+			mapRevIterator(ptr ptr) { _ptr = ptr; _end = false; _root = ptr;}
+			mapRevIterator(const mapRevIterator &cpy)
+            {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
+                _root = cpy._root;
+                _end = cpy._end;
+            };
+			virtual ~mapRevIterator()
+            {
+                if (_end == true)
+                    delete _ptr;
+            };
 
-			mapRevIterator &operator=(mapRevIterator const &cpy){this->_ptr = cpy._ptr;}
+			mapRevIterator &operator=(mapRevIterator const &cpy)
+            {
+                if (cpy._end == true)
+                {
+                    if (_end == true)
+                       delete _ptr;
+                    _ptr = new node(*(cpy._ptr));
+                }
+                else
+                    _ptr = cpy._ptr;
+                _end = cpy._end;
+                _root = cpy._root;
+                return (*this);
+            }
 
             mapRevIterator operator++()
 			{
-				if (this->_ptr->get_left())
+				if (_end == true)
+                {
+                    ptr tmp = _ptr;
+                    _ptr = _ptr->get_root();
+                    _end = false;
+                    delete tmp;
+                    return (*this);
+                }
+				if (_ptr->get_left())
 				{
-					this->_ptr = this->_ptr->get_left();
-					while (this->_ptr->get_right())
-						this->_ptr = this->_ptr->get_right();
+					_ptr = _ptr->get_left();
+					while (_ptr->get_right())
+						_ptr = _ptr->get_right();
 				}
 				else
-					this->_ptr = this->_ptr->get_root();
+					_ptr = _ptr->get_root();
 				return (*this);
 			}
 
             mapRevIterator operator--()
             {
-                if (this->_ptr->get_right())
-					this->_ptr = leftmost(this->_ptr->get_right());
-				else
+                ptr tmp;
+                tmp = _ptr;
+
+                if (_root->rightmost(_root) == tmp)
+                {
+                    ptr bot = new node();
+					bot->set_root(_ptr);
+					_ptr = bot;
+                    _end = true;
+                    return (*this);
+                }
+				else if (_ptr->get_right())
+                {
+					_ptr = _ptr->leftmost(_ptr->get_right());
+                    _end = false;
+                    return (*this);
+                }
+				else if (_end == false)
 				{
-					ptr p = this->_ptr->get_root();
-					while (p && this->_ptr == p->get_right())
+					ptr p = _ptr->get_root();
+					while (p && _ptr == p->get_right())
 					{
-						this->_ptr = p;
+						_ptr = p;
 						p = p->get_root();
 					}
-					this->_ptr = p;
+					_ptr = p;
 				}
 				return (*this);
             }
+
+            mapRevIterator operator++(int)
+			{
+				mapRevIterator before = *this;
+				++(*this);
+				return (before);
+			}
+
+			mapRevIterator operator--(int)
+			{
+				mapRevIterator before = *this;
+				--(*this);
+				return (before);
+			}
+
+            reference operator*()
+			{
+				return (_ptr->get_pair());
+			}
+
+			pointer operator->()
+			{
+				return (&(_ptr->get_pair()));
+			}
+
+			bool operator==(mapRevIterator const &cmp)
+			{
+				if (_end == true && cmp._end == true)
+					return (true);
+				return (_ptr->get_key() == cmp._ptr->get_key());
+			}
+
+            bool operator!=(mapRevIterator const &cmp)
+			{
+				return (!(*this == cmp));
+			}
+
+			mapRevIterator leftmost()
+			{
+				while (_ptr->get_left() != NULL)
+                    _ptr = _ptr->get_left();
+				return (*this);
+			}
+
+			mapRevIterator rightmost()
+			{
+				while (_ptr->get_right() != NULL)
+                    _ptr = _ptr->get_right();
+				return (*this);
+			}
+
+            static const bool InputIter = true;
     };
 
     template <typename Tkey, typename Tvalue >
-    class   mapConstRevIterator : public mapRevIterator<Tkey, Tvalue>
+    class   mapConstRevIterator 
     {
+        public:
+            typedef treeNode<Tkey, Tvalue>	        node;
+            typedef node *					        ptr;
+            typedef ft::pair<Tkey, Tvalue>	        value_type;
+            typedef value_type &	                reference;
+            typedef value_type const &              constReference;
+            typedef value_type *	                pointer;
+		protected :
+			ptr										_ptr;
+            ptr                                     _root;
+            bool									_end;
+        public :
+            mapConstRevIterator(void){};
+			mapConstRevIterator(ptr ptr) { _ptr = ptr; _end = false; _root = ptr;}
+			mapConstRevIterator(const mapConstRevIterator &cpy)
+            {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
+                _root = cpy._root;
+                _end = cpy._end;
+            };
+			virtual ~mapConstRevIterator()
+            {
+                if (_end == true)
+                    delete _ptr;
+            };
 
+			mapConstRevIterator &operator=(mapConstRevIterator const &cpy)
+            {
+                if (cpy._end == true)
+                {
+                    if (_end == true)
+                       delete _ptr;
+                    _ptr = new node(*(cpy._ptr));
+                }
+                else
+                    _ptr = cpy._ptr;
+                _end = cpy._end;
+                _root = cpy._root;
+                return (*this);
+            }
+
+            mapConstRevIterator operator++()
+			{
+				if (_end == true)
+                {
+                    ptr tmp = _ptr;
+                    _ptr = _ptr->get_root();
+                    _end = false;
+                    delete tmp;
+                    return (*this);
+                }
+				if (_ptr->get_left())
+				{
+					_ptr = _ptr->get_left();
+					while (_ptr->get_right())
+						_ptr = _ptr->get_right();
+				}
+				else
+					_ptr = _ptr->get_root();
+				return (*this);
+			}
+
+            mapConstRevIterator operator--()
+            {
+                ptr tmp;
+                tmp = _ptr;
+
+                if (_root->rightmost(_root) == tmp)
+                {
+                    ptr bot = new node();
+					bot->set_root(_ptr);
+					_ptr = bot;
+                    _end = true;
+                    return (*this);
+                }
+				else if (_ptr->get_right())
+                {
+					_ptr = _ptr->leftmost(_ptr->get_right());
+                    _end = false;
+                    return (*this);
+                }
+				else if (_end == false)
+				{
+					ptr p = _ptr->get_root();
+					while (p && _ptr == p->get_right())
+					{
+						_ptr = p;
+						p = p->get_root();
+					}
+					_ptr = p;
+				}
+				return (*this);
+            }
+
+            mapConstRevIterator operator++(int)
+			{
+				mapConstRevIterator before = *this;
+				++(*this);
+				return (before);
+			}
+
+			mapConstRevIterator operator--(int)
+			{
+				mapConstRevIterator before = *this;
+				--(*this);
+				return (before);
+			}
+
+            reference operator*()
+			{
+				return (_ptr->get_pair());
+			}
+
+			pointer operator->()
+			{
+				return (&(_ptr->get_pair()));
+			}
+
+			bool operator==(mapConstRevIterator const &cmp)
+			{
+				if (_end == true && cmp._end == true)
+					return (true);
+				return (_ptr->get_key() == cmp._ptr->get_key());
+			}
+
+            bool operator!=(mapConstRevIterator const &cmp)
+			{
+				return (!(*this == cmp));
+			}
+
+			mapConstRevIterator leftmost()
+			{
+				while (_ptr->get_left() != NULL)
+                    _ptr = _ptr->get_left();
+				return (*this);
+			}
+
+			mapConstRevIterator rightmost()
+			{
+				while (_ptr->get_right() != NULL)
+                    _ptr = _ptr->get_right();
+				return (*this);
+			}
+
+            static const bool InputIter = true;
     };
 }
 #endif

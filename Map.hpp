@@ -117,10 +117,14 @@ namespace ft
 			reverse_iterator rend()
 			{
 				reverse_iterator cur(_root);
-				return (--(cur.leftmost()));
+				return ((cur.leftmost()));
 			};
 
-			const_reverse_iterator rend() const;
+			const_reverse_iterator rend() const
+			{
+				const_reverse_iterator cur(_root);
+				return ((cur.leftmost()));
+			};
 
 			bool empty() const
 			{
