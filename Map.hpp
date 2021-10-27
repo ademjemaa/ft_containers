@@ -44,7 +44,7 @@ namespace ft
 			const Allocator& alloc = Allocator()) : _root(NULL), _size(0), _comp(comp), _empty(true), _all(alloc)	 {
 				_size = 0;
 				_empty = true;
-			}; 
+			};
 
 			template <typename InputIterator>
 			map (InputIterator first, InputIterator last,
@@ -98,7 +98,11 @@ namespace ft
 
 			const_iterator end() const
 			{
-				const_iterator cur(_root);
+				node_ptr	tmp;
+				tmp = _root;
+				const_iterator cur(tmp);
+				if (_size == 0)
+					return (cur);
 				return (++(cur.rightmost()));
 			}
 
@@ -163,7 +167,7 @@ namespace ft
 					_size++;
 					return (insert_node(found, new_node)->get_value());
 				}
-				
+
 				return (_root->get_value());
 			}
 
@@ -178,7 +182,7 @@ namespace ft
 					return (pair<iterator, bool>(it, false));
 				}
 				else
-				{					
+				{
 					iterator it(insert_node(_root, val));
 					_size++;
 					return (pair<iterator, bool>(it, true));
@@ -314,12 +318,13 @@ namespace ft
 					erase(first);
 					first++;
 				}
-				
+
 			}
 
 			void clear()
-			{	
-				erase(begin(), end());
+			{
+				while (!empty())
+					erase(begin());
 			}
 
 			key_compare key_comp() const
@@ -406,6 +411,18 @@ namespace ft
 			};
 
 			value_compare value_comp() const { return (value_compare(Compare())); };
+
+
+			void swap (map& x)
+			{
+				map tmp;
+
+				tmp = *this;
+				clear();
+				insert(x.begin(), x.end());
+				x.clear();
+				x.insert(tmp.begin(), tmp.end());
+			}
 
 		private :
 
