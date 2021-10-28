@@ -117,6 +117,6 @@ int main(int argc, char** argv) {
 	test_assign();
 	map_debug();
 	vector_debug();
-	stack_debug();
+	//stack_debug();
 	return (0);
 }

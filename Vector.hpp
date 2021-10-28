@@ -243,19 +243,19 @@ namespace ft
             }
             rev rbegin()
             {
-                return reverse_iterator<VectorIterator<T> >(end());
+                return reverse_iterator<VectorIterator<T> >(--end());
             }
             const_rev rbegin() const
             {
-                return reverse_iterator<VectorIterator<T> >(end());
+                return (reverse_iterator<VectorIterator<T> >(--end()));
             }
             rev rend()
             {
-                return reverse_iterator<VectorIterator<T> >(begin());
+                return reverse_iterator<VectorIterator<T> >(--begin());
             }
             const_rev rend() const
             {
-                return reverse_iterator<VectorIterator<T> >(begin());
+                return reverse_iterator<VectorIterator<T> >(--begin());
             }
             size_type size() const
             {
