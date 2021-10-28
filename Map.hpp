@@ -395,7 +395,14 @@ namespace ft
 			{
 				return (pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));
 			}
+			size_type count(const key_type& key) const
+			{
+				node_ptr it(find_node(key));
 
+				if (it->get_key() != key)
+					return (0);
+				return (1);
+			}
 			class value_compare :
 			public binary_function<value_type, value_type, bool>
 			{
@@ -403,6 +410,8 @@ namespace ft
 					Compare comp;
 
 				public :
+					value_compare(Compare c) : comp(c) {};
+					virtual ~value_compare() {};
 					bool operator() (const value_type& x, const value_type& y) const
 					{
 						return comp(x.first, y.first);
@@ -426,7 +435,7 @@ namespace ft
 
 		private :
 
-			node_ptr	find_node(const key_type &k)
+			node_ptr	find_node(const key_type &k) const
 			{
 				node_ptr cur = _root;
 
