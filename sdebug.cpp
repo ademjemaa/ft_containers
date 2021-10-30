@@ -187,7 +187,71 @@ static void	test_push_std()
 	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
 
 	std::cout << "st_nums.empty() = " << std::boolalpha << st_nums.empty() << std::endl << std::endl;
+	ft::stack<int>	st_nums_one;
+	ft::stack<int>	st_nums_two;
 
+	st_nums_one.push(0);
+	st_nums_one.push(1);
+	st_nums_one.push(10);
+	st_nums_one.push(11);
+	st_nums_one.push(100);
+	st_nums_one.push(101);
+	st_nums_one.push(110);
+	st_nums_one.push(111);
+
+	std::cout << "st_nums_one.push(0);" << std::endl;
+	std::cout << "st_nums_one.push(1);" << std::endl;
+	std::cout << "st_nums_one.push(10);" << std::endl;
+	std::cout << "st_nums_one.push(11);" << std::endl;
+	std::cout << "st_nums_one.push(100);" << std::endl;
+	std::cout << "st_nums_one.push(101);" << std::endl;
+	std::cout << "st_nums_one.push(110);" << std::endl;
+	std::cout << "st_nums_one.push(111);" << std::endl << std::endl;
+
+	st_nums_two.push(0);
+	st_nums_two.push(1);
+	st_nums_two.push(10);
+	st_nums_two.push(11);
+	st_nums_two.push(100);
+	st_nums_two.push(101);
+	st_nums_two.push(110);
+	st_nums_two.push(111);
+	st_nums_two.push(1000);
+
+	std::cout << "st_nums_two.push(0);" << std::endl;
+	std::cout << "st_nums_two.push(1);" << std::endl;
+	std::cout << "st_nums_two.push(10);" << std::endl;
+	std::cout << "st_nums_two.push(11);" << std::endl;
+	std::cout << "st_nums_two.push(100);" << std::endl;
+	std::cout << "st_nums_two.push(101);" << std::endl;
+	std::cout << "st_nums_two.push(110);" << std::endl;
+	std::cout << "st_nums_two.push(111);" << std::endl;
+	std::cout << "st_nums_two.push(1000);" << std::endl << std::endl;
+
+	std::cout << "#- EQUAL & NON-EQUAL -#" << std::endl << std::endl;
+	std::cout << "st_nums_one == st_nums_one : " << std::boolalpha << (st_nums_one == st_nums_one) << std::endl;
+	std::cout << "st_nums_one == st_nums_two : " << std::boolalpha << (st_nums_one == st_nums_two) << std::endl << std::endl;
+
+	std::cout << "st_nums_one != st_nums_one : " << std::boolalpha << (st_nums_one != st_nums_one) << std::endl;
+	std::cout << "st_nums_one != st_nums_two : " << std::boolalpha << (st_nums_one != st_nums_two) << std::endl << std::endl;
+
+	std::cout << "#- SUPERIOR & EQUAL-SUPERIOR -#" << std::endl << std::endl;
+
+	std::cout << "st_nums_one < st_nums_one = " << (st_nums_one < st_nums_one) << std::endl;
+	std::cout << "st_nums_one < st_nums_two = " << (st_nums_one < st_nums_two) << std::endl;
+	std::cout << "st_nums_two < st_nums_one = " << (st_nums_two < st_nums_one) << std::endl;
+	std::cout << "st_nums_one <= st_nums_one = " << (st_nums_one <= st_nums_one) << std::endl;
+	std::cout << "st_nums_one <= st_nums_two = " << (st_nums_one <= st_nums_two) << std::endl;
+	std::cout << "st_nums_two <= st_nums_one = " << (st_nums_two <= st_nums_one) << std::endl << std::endl;
+
+	std::cout << "#- INFERIOR & EQUAL-INFERIOR -#" << std::endl << std::endl;
+
+	std::cout << "st_nums_one > st_nums_one = " << (st_nums_one > st_nums_one) << std::endl;
+	std::cout << "st_nums_one > st_nums_two = " << (st_nums_one > st_nums_two) << std::endl;
+	std::cout << "st_nums_two > st_nums_one = " << (st_nums_two > st_nums_one) << std::endl;
+	std::cout << "st_nums_one >= st_nums_one = " << (st_nums_one >= st_nums_one) << std::endl;
+	std::cout << "st_nums_one >= st_nums_two = " << (st_nums_one >= st_nums_two) << std::endl;
+	std::cout << "st_nums_two >= st_nums_one = " << (st_nums_two >= st_nums_one) << std::endl << std::endl;
 }
 
 static void	test_push()
@@ -232,7 +296,6 @@ static void	test_push()
 
 	std::cout << "st_nums.empty() = " << std::boolalpha << st_nums.empty() << std::endl << std::endl;
 
-	test_push_std();
 }
 
 void  stack_debug(void)
