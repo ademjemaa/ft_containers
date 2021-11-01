@@ -1,305 +1,119 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sdebug.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/30 21:55:29 by adjemaa           #+#    #+#             */
+/*   Updated: 2021/10/30 22:00:03 by adjemaa          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Stack.hpp"
 #include <stack>
 #include <iostream>
 #include <vector>
 
-static void	test_non_member_ope_std()
+void	stack_functions_test(void)
 {
 
-	std::stack<int>	st_nums_one;
-	std::stack<int>	st_nums_two;
+	ft::stack<int>	stack_one;
+	ft::stack<int>	stack_two;
 
-	st_nums_one.push(0);
-	st_nums_one.push(1);
-	st_nums_one.push(10);
-	st_nums_one.push(11);
-	st_nums_one.push(100);
-	st_nums_one.push(101);
-	st_nums_one.push(110);
-	st_nums_one.push(111);
+	stack_one.push(10);
+	stack_one.push(11);
+	stack_one.push(12);
+	stack_one.push(122);
+	stack_one.push(123);
+	stack_one.push(1233);
+	stack_one.push(1234);
+	stack_one.push(12344);
 
-	std::cout << "st_nums_one.push(0);" << std::endl;
-	std::cout << "st_nums_one.push(1);" << std::endl;
-	std::cout << "st_nums_one.push(10);" << std::endl;
-	std::cout << "st_nums_one.push(11);" << std::endl;
-	std::cout << "st_nums_one.push(100);" << std::endl;
-	std::cout << "st_nums_one.push(101);" << std::endl;
-	std::cout << "st_nums_one.push(110);" << std::endl;
-	std::cout << "st_nums_one.push(111);" << std::endl << std::endl;
+	stack_two.push(10);
+	stack_two.push(11);
+	stack_two.push(12);
+	stack_two.push(122);
+	stack_two.push(123);
+	stack_two.push(1233);
+	stack_two.push(1234);
+	stack_two.push(12344);
+	stack_two.push(12345);
 
-	st_nums_two.push(0);
-	st_nums_two.push(1);
-	st_nums_two.push(10);
-	st_nums_two.push(11);
-	st_nums_two.push(100);
-	st_nums_two.push(101);
-	st_nums_two.push(110);
-	st_nums_two.push(111);
-	st_nums_two.push(1000);
-
-	std::cout << "st_nums_two.push(0);" << std::endl;
-	std::cout << "st_nums_two.push(1);" << std::endl;
-	std::cout << "st_nums_two.push(10);" << std::endl;
-	std::cout << "st_nums_two.push(11);" << std::endl;
-	std::cout << "st_nums_two.push(100);" << std::endl;
-	std::cout << "st_nums_two.push(101);" << std::endl;
-	std::cout << "st_nums_two.push(110);" << std::endl;
-	std::cout << "st_nums_two.push(111);" << std::endl;
-	std::cout << "st_nums_two.push(1000);" << std::endl << std::endl;
-
-	std::cout << "#- EQUAL & NON-EQUAL -#" << std::endl << std::endl;
-	std::cout << "st_nums_one == st_nums_one : " << std::boolalpha << (st_nums_one == st_nums_one) << std::endl;
-	std::cout << "st_nums_one == st_nums_two : " << std::boolalpha << (st_nums_one == st_nums_two) << std::endl << std::endl;
-
-	std::cout << "st_nums_one != st_nums_one : " << std::boolalpha << (st_nums_one != st_nums_one) << std::endl;
-	std::cout << "st_nums_one != st_nums_two : " << std::boolalpha << (st_nums_one != st_nums_two) << std::endl << std::endl;
-
-	std::cout << "#- SUPERIOR & EQUAL-SUPERIOR -#" << std::endl << std::endl;
-
-	std::cout << "st_nums_one < st_nums_one = " << (st_nums_one < st_nums_one) << std::endl;
-	std::cout << "st_nums_one < st_nums_two = " << (st_nums_one < st_nums_two) << std::endl;
-	std::cout << "st_nums_two < st_nums_one = " << (st_nums_two < st_nums_one) << std::endl;
-	std::cout << "st_nums_one <= st_nums_one = " << (st_nums_one <= st_nums_one) << std::endl;
-	std::cout << "st_nums_one <= st_nums_two = " << (st_nums_one <= st_nums_two) << std::endl;
-	std::cout << "st_nums_two <= st_nums_one = " << (st_nums_two <= st_nums_one) << std::endl << std::endl;
-
-	std::cout << "#- INFERIOR & EQUAL-INFERIOR -#" << std::endl << std::endl;
-
-	std::cout << "st_nums_one > st_nums_one = " << (st_nums_one > st_nums_one) << std::endl;
-	std::cout << "st_nums_one > st_nums_two = " << (st_nums_one > st_nums_two) << std::endl;
-	std::cout << "st_nums_two > st_nums_one = " << (st_nums_two > st_nums_one) << std::endl;
-	std::cout << "st_nums_one >= st_nums_one = " << (st_nums_one >= st_nums_one) << std::endl;
-	std::cout << "st_nums_one >= st_nums_two = " << (st_nums_one >= st_nums_two) << std::endl;
-	std::cout << "st_nums_two >= st_nums_one = " << (st_nums_two >= st_nums_one) << std::endl << std::endl;
-
+	std::cout << "stack_one size == " << stack_one.size() << std::endl;
+	std::cout << "stack_two size == " << stack_two.size() << std::endl;
+	std::cout << "stack content : (showing top then poping until stack.empty() == true" << std::endl;
+	while (stack_one.empty() == false)
+	{
+		std::cout << stack_one.top() << std::endl;
+		stack_one.pop();
+	}
+	std::cout << "stack_one size after popping all elements : " << stack_one.size() << std::endl;
 }
 
-static void	test_non_member_ope()
+void	stack_operators_test(void)
 {
+	ft::stack<int>	stack_one;
+	ft::stack<int>	stack_two;
 
-	ft::stack<int>	st_nums_one;
-	ft::stack<int>	st_nums_two;
+	stack_one.push(10);
+	stack_one.push(11);
+	stack_one.push(12);
+	stack_one.push(122);
+	stack_one.push(123);
+	stack_one.push(1233);
+	stack_one.push(1234);
+	stack_one.push(12344);
 
-	st_nums_one.push(0);
-	st_nums_one.push(1);
-	st_nums_one.push(10);
-	st_nums_one.push(11);
-	st_nums_one.push(100);
-	st_nums_one.push(101);
-	st_nums_one.push(110);
-	st_nums_one.push(111);
+	stack_two.push(10);
+	stack_two.push(11);
+	stack_two.push(12);
+	stack_two.push(122);
+	stack_two.push(123);
+	stack_two.push(1233);
+	stack_two.push(1234);
+	stack_two.push(12344);
+	stack_two.push(12345);
 
-	std::cout << "st_nums_one.push(0);" << std::endl;
-	std::cout << "st_nums_one.push(1);" << std::endl;
-	std::cout << "st_nums_one.push(10);" << std::endl;
-	std::cout << "st_nums_one.push(11);" << std::endl;
-	std::cout << "st_nums_one.push(100);" << std::endl;
-	std::cout << "st_nums_one.push(101);" << std::endl;
-	std::cout << "st_nums_one.push(110);" << std::endl;
-	std::cout << "st_nums_one.push(111);" << std::endl << std::endl;
-
-	st_nums_two.push(0);
-	st_nums_two.push(1);
-	st_nums_two.push(10);
-	st_nums_two.push(11);
-	st_nums_two.push(100);
-	st_nums_two.push(101);
-	st_nums_two.push(110);
-	st_nums_two.push(111);
-	st_nums_two.push(1000);
-
-	std::cout << "st_nums_two.push(0);" << std::endl;
-	std::cout << "st_nums_two.push(1);" << std::endl;
-	std::cout << "st_nums_two.push(10);" << std::endl;
-	std::cout << "st_nums_two.push(11);" << std::endl;
-	std::cout << "st_nums_two.push(100);" << std::endl;
-	std::cout << "st_nums_two.push(101);" << std::endl;
-	std::cout << "st_nums_two.push(110);" << std::endl;
-	std::cout << "st_nums_two.push(111);" << std::endl;
-	std::cout << "st_nums_two.push(1000);" << std::endl << std::endl;
-
-	std::cout << "#- EQUAL & NON-EQUAL -#" << std::endl << std::endl;
-	std::cout << "st_nums_one == st_nums_one : " << std::boolalpha << (st_nums_one == st_nums_one) << std::endl;
-	std::cout << "st_nums_one == st_nums_two : " << std::boolalpha << (st_nums_one == st_nums_two) << std::endl << std::endl;
-
-	std::cout << "st_nums_one != st_nums_one : " << std::boolalpha << (st_nums_one != st_nums_one) << std::endl;
-	std::cout << "st_nums_one != st_nums_two : " << std::boolalpha << (st_nums_one != st_nums_two) << std::endl << std::endl;
-
-	std::cout << "#- SUPERIOR & EQUAL-SUPERIOR -#" << std::endl << std::endl;
-
-	std::cout << "st_nums_one < st_nums_one = " << (st_nums_one < st_nums_one) << std::endl;
-	std::cout << "st_nums_one < st_nums_two = " << (st_nums_one < st_nums_two) << std::endl;
-	std::cout << "st_nums_two < st_nums_one = " << (st_nums_two < st_nums_one) << std::endl;
-	std::cout << "st_nums_one <= st_nums_one = " << (st_nums_one <= st_nums_one) << std::endl;
-	std::cout << "st_nums_one <= st_nums_two = " << (st_nums_one <= st_nums_two) << std::endl;
-	std::cout << "st_nums_two <= st_nums_one = " << (st_nums_two <= st_nums_one) << std::endl << std::endl;
-
-	std::cout << "#- INFERIOR & EQUAL-INFERIOR -#" << std::endl << std::endl;
-
-	std::cout << "st_nums_one > st_nums_one = " << (st_nums_one > st_nums_one) << std::endl;
-	std::cout << "st_nums_one > st_nums_two = " << (st_nums_one > st_nums_two) << std::endl;
-	std::cout << "st_nums_two > st_nums_one = " << (st_nums_two > st_nums_one) << std::endl;
-	std::cout << "st_nums_one >= st_nums_one = " << (st_nums_one >= st_nums_one) << std::endl;
-	std::cout << "st_nums_one >= st_nums_two = " << (st_nums_one >= st_nums_two) << std::endl;
-	std::cout << "st_nums_two >= st_nums_one = " << (st_nums_two >= st_nums_one) << std::endl << std::endl;
-
-	test_non_member_ope_std();
-}
-
-static void	test_push_std()
-{
-
-	std::stack<int>	st_nums;
-	std::cout << "ft::stack<int> st_nums;" << std::endl << std::endl;
-
-	// TEST EMPTY FUNCTION
-	std::cout << "st_nums.empty() = " << std::boolalpha << st_nums.empty() << std::endl << std::endl;
-
-	// TEST PUSH ONE ITEM
-	st_nums.push(42);
-	std::cout << "st_nums.push(42);" << std::endl << std::endl;
-
-	std::cout << "st_nums.top() = " << st_nums.top() << std::endl << std::endl;
-
-	std::cout << "st_nums.empty() = " << std::boolalpha << st_nums.empty() << std::endl << std::endl;
-
-	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
-
-	// TEST PUSH MANY ITEMS
-	st_nums.push(56);
-	std::cout << "st_nums.push(56);" << std::endl << std::endl;
-
-	std::cout << "st_nums.top() = " << st_nums.top() << std::endl << std::endl;
-
-	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
-
-	// TEST POP FUNCTION
-	st_nums.pop();
-	std::cout << "st_nums.pop();" << std::endl << std::endl;
-
-	std::cout << "st_nums.top() = " << st_nums.top() << std::endl << std::endl;
-
-	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
-
-	st_nums.pop();
-	std::cout << "st_nums.pop();" << std::endl << std::endl;
-
-	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
-
-	std::cout << "st_nums.empty() = " << std::boolalpha << st_nums.empty() << std::endl << std::endl;
-	ft::stack<int>	st_nums_one;
-	ft::stack<int>	st_nums_two;
-
-	st_nums_one.push(0);
-	st_nums_one.push(1);
-	st_nums_one.push(10);
-	st_nums_one.push(11);
-	st_nums_one.push(100);
-	st_nums_one.push(101);
-	st_nums_one.push(110);
-	st_nums_one.push(111);
-
-	std::cout << "st_nums_one.push(0);" << std::endl;
-	std::cout << "st_nums_one.push(1);" << std::endl;
-	std::cout << "st_nums_one.push(10);" << std::endl;
-	std::cout << "st_nums_one.push(11);" << std::endl;
-	std::cout << "st_nums_one.push(100);" << std::endl;
-	std::cout << "st_nums_one.push(101);" << std::endl;
-	std::cout << "st_nums_one.push(110);" << std::endl;
-	std::cout << "st_nums_one.push(111);" << std::endl << std::endl;
-
-	st_nums_two.push(0);
-	st_nums_two.push(1);
-	st_nums_two.push(10);
-	st_nums_two.push(11);
-	st_nums_two.push(100);
-	st_nums_two.push(101);
-	st_nums_two.push(110);
-	st_nums_two.push(111);
-	st_nums_two.push(1000);
-
-	std::cout << "st_nums_two.push(0);" << std::endl;
-	std::cout << "st_nums_two.push(1);" << std::endl;
-	std::cout << "st_nums_two.push(10);" << std::endl;
-	std::cout << "st_nums_two.push(11);" << std::endl;
-	std::cout << "st_nums_two.push(100);" << std::endl;
-	std::cout << "st_nums_two.push(101);" << std::endl;
-	std::cout << "st_nums_two.push(110);" << std::endl;
-	std::cout << "st_nums_two.push(111);" << std::endl;
-	std::cout << "st_nums_two.push(1000);" << std::endl << std::endl;
-
-	std::cout << "#- EQUAL & NON-EQUAL -#" << std::endl << std::endl;
-	std::cout << "st_nums_one == st_nums_one : " << std::boolalpha << (st_nums_one == st_nums_one) << std::endl;
-	std::cout << "st_nums_one == st_nums_two : " << std::boolalpha << (st_nums_one == st_nums_two) << std::endl << std::endl;
-
-	std::cout << "st_nums_one != st_nums_one : " << std::boolalpha << (st_nums_one != st_nums_one) << std::endl;
-	std::cout << "st_nums_one != st_nums_two : " << std::boolalpha << (st_nums_one != st_nums_two) << std::endl << std::endl;
-
-	std::cout << "#- SUPERIOR & EQUAL-SUPERIOR -#" << std::endl << std::endl;
-
-	std::cout << "st_nums_one < st_nums_one = " << (st_nums_one < st_nums_one) << std::endl;
-	std::cout << "st_nums_one < st_nums_two = " << (st_nums_one < st_nums_two) << std::endl;
-	std::cout << "st_nums_two < st_nums_one = " << (st_nums_two < st_nums_one) << std::endl;
-	std::cout << "st_nums_one <= st_nums_one = " << (st_nums_one <= st_nums_one) << std::endl;
-	std::cout << "st_nums_one <= st_nums_two = " << (st_nums_one <= st_nums_two) << std::endl;
-	std::cout << "st_nums_two <= st_nums_one = " << (st_nums_two <= st_nums_one) << std::endl << std::endl;
-
-	std::cout << "#- INFERIOR & EQUAL-INFERIOR -#" << std::endl << std::endl;
-
-	std::cout << "st_nums_one > st_nums_one = " << (st_nums_one > st_nums_one) << std::endl;
-	std::cout << "st_nums_one > st_nums_two = " << (st_nums_one > st_nums_two) << std::endl;
-	std::cout << "st_nums_two > st_nums_one = " << (st_nums_two > st_nums_one) << std::endl;
-	std::cout << "st_nums_one >= st_nums_one = " << (st_nums_one >= st_nums_one) << std::endl;
-	std::cout << "st_nums_one >= st_nums_two = " << (st_nums_one >= st_nums_two) << std::endl;
-	std::cout << "st_nums_two >= st_nums_one = " << (st_nums_two >= st_nums_one) << std::endl << std::endl;
-}
-
-static void	test_push()
-{
-
-	ft::stack<int>	st_nums;
-	std::cout << "ft::stack<int> st_nums;" << std::endl << std::endl;
-
-	// TEST EMPTY FUNCTION
-	std::cout << "st_nums.empty() = " << std::boolalpha << st_nums.empty() << std::endl << std::endl;
-
-	// TEST PUSH ONE ITEM
-	st_nums.push(42);
-	std::cout << "st_nums.push(42);" << std::endl << std::endl;
-
-	std::cout << "st_nums.top() = " << st_nums.top() << std::endl << std::endl;
-
-	std::cout << "st_nums.empty() = " << std::boolalpha << st_nums.empty() << std::endl << std::endl;
-
-	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
-
-	// TEST PUSH MANY ITEMS
-	st_nums.push(56);
-	std::cout << "st_nums.push(56);" << std::endl << std::endl;
-
-	std::cout << "st_nums.top() = " << st_nums.top() << std::endl << std::endl;
-
-	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
-
-	// TEST POP FUNCTION
-	st_nums.pop();
-	std::cout << "st_nums.pop();" << std::endl << std::endl;
-
-	std::cout << "st_nums.top() = " << st_nums.top() << std::endl << std::endl;
-
-	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
-
-	st_nums.pop();
-	std::cout << "st_nums.pop();" << std::endl << std::endl;
-
-	std::cout << "st_nums.size() = " << std::boolalpha << st_nums.size() << std::endl << std::endl;
-
-	std::cout << "st_nums.empty() = " << std::boolalpha << st_nums.empty() << std::endl << std::endl;
-
+	std::cout << "stack_one == stack_two : " << std::boolalpha << (stack_one == stack_two) << std::endl;
+	std::cout << "stack_one != stack_two : " << std::boolalpha << (stack_one != stack_two) << std::endl;
+	std::cout << "stack_one > stack_two : " << std::boolalpha << (stack_one > stack_two) << std::endl;
+	std::cout << "stack_one < stack_two : " << std::boolalpha << (stack_one < stack_two) << std::endl;
+	std::cout << "stack_one >= stack_two : " << std::boolalpha << (stack_one >= stack_two) << std::endl;
+	std::cout << "stack_one <= stack_two : " << std::boolalpha << (stack_one <= stack_two) << std::endl;
+	std::cout << "popping last element of stack two " << std::endl;
+	stack_two.pop();
+	std::cout << "stack_one == stack_two : " << std::boolalpha << (stack_one == stack_two) << std::endl;
+	std::cout << "stack_one != stack_two : " << std::boolalpha << (stack_one != stack_two) << std::endl;
+	std::cout << "stack_one > stack_two : " << std::boolalpha << (stack_one > stack_two) << std::endl;
+	std::cout << "stack_one < stack_two : " << std::boolalpha << (stack_one < stack_two) << std::endl;
+	std::cout << "stack_one >= stack_two : " << std::boolalpha << (stack_one >= stack_two) << std::endl;
+	std::cout << "stack_one <= stack_two : " << std::boolalpha << (stack_one <= stack_two) << std::endl;
+	std::cout << "printing and popping all elements of both stacks " << std::endl;
+	std::cout << "stack_one : " << std::endl;
+	while (stack_one.empty() == false)
+	{
+		std::cout << stack_one.top() << std::endl;
+		stack_one.pop();
+	}
+	std::cout << "stack_two : " << std::endl;
+	while (stack_two.empty() == false)
+	{
+		std::cout << stack_two.top() << std::endl;
+		stack_two.pop();
+	}
+	std::cout << "stack_one == stack_two : " << std::boolalpha << (stack_one == stack_two) << std::endl;
+	std::cout << "stack_one != stack_two : " << std::boolalpha << (stack_one != stack_two) << std::endl;
+	std::cout << "stack_one > stack_two : " << std::boolalpha << (stack_one > stack_two) << std::endl;
+	std::cout << "stack_one < stack_two : " << std::boolalpha << (stack_one < stack_two) << std::endl;
+	std::cout << "stack_one >= stack_two : " << std::boolalpha << (stack_one >= stack_two) << std::endl;
+	std::cout << "stack_one <= stack_two : " << std::boolalpha << (stack_one <= stack_two) << std::endl;
+	std::cout << "stack_one empty : " << std::boolalpha << stack_one.empty() << std::endl;
+	std::cout << "stack_two empty : " << std::boolalpha << stack_two.empty() << std::endl;
 }
 
 void  stack_debug(void)
 {
-    test_non_member_ope();
-    test_push();
+    stack_functions_test();
+	stack_operators_test();
 }
