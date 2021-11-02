@@ -207,6 +207,9 @@ void	compare_test(void)
 		std::cout << it1->first << " <= " << pr1.first << std::endl;
 		it1++;
 	}
+	std::cout << "reverse iterator test while at it" << std::endl;
+	for (std::map<int, int>::reverse_iterator it2 = firstmap1.rbegin(); it2 != firstmap1.rend(); it2++)
+		std::cout << it2->first << " " << it2->second << std::endl;
 }
 
 void	std_map_debug(void)

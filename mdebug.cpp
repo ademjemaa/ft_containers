@@ -6,7 +6,7 @@
 /*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:50 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/11/01 19:21:07 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/01 20:58:32 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void	insert_test(void)
 	cpy_int_map.insert(++(cpy_int_map.begin()), ft::make_pair(30, 20));
 	std::cout << "cpy_int_map after insertion by it:" << std::endl;
 	for (ft::map<int, int>::iterator it = cpy_int_map.begin(); it != cpy_int_map.end(); it++)
+		std::cout << *it << std::endl;
+	std::cout << "int_map before: " << std::endl;
+	for (ft::map<int, int>::iterator it = int_map.begin(); it != int_map.end(); it++)
 		std::cout << *it << std::endl;
 	swap_map = cpy_int_map;
 	std::cout << "swap_map before: " << std::endl;
@@ -216,6 +219,9 @@ void	compare_test(void)
 		std::cout << it->first << " <= " << pr.first << std::endl;
 		it++;
 	}
+	std::cout << "reverse iterator test while at it" << std::endl;
+	for (ft::map<int, int>::reverse_iterator it2 = firstmap.rbegin(); it2 != firstmap.rend(); it2++)
+		std::cout << *it2 << std::endl;
 }
 
 void map_debug(void)

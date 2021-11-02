@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extras.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adjemaa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:47 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/10/30 21:55:48 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/01 21:03:24 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,16 @@ namespace ft{
         str << p.second;
         return str;
     }
+
+    template <typename T1, typename T2>
+    std::ostream& operator <<(std::ostream& str, const ft::pair<T1, T2>& p)
+    {
+        str << "first : ";
+        str << p.first;
+        str << " second : ";
+        str << p.second;
+        return str;
+    }
     //binary function https://en.cppreference.com/w/cpp/utility/functional/binary_function
 
     template<
@@ -287,7 +297,8 @@ namespace ft{
 			{
                 ptr tmp;
                 tmp = _ptr;
-
+               // std::cout << "inside ++ " << std::endl;
+               // std::cout << _ptr->get_pair() << std::endl;
                 if (_root->rightmost(_root) == tmp)
                 {
                     ptr bot = new node();
@@ -690,7 +701,7 @@ namespace ft{
     };
 
     template <typename Tkey, typename Tvalue >
-    class   mapConstRevIterator 
+    class   mapConstRevIterator
     {
         public:
             typedef treeNode<Tkey, Tvalue>	        node;

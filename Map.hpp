@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adjemaa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:12 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/10/30 21:55:14 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/01 21:09:49 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "extras.hpp"
 #include "Iterator.hpp"
+#include "Stack.hpp"
 
 namespace ft
 {
@@ -223,7 +224,7 @@ namespace ft
 				while (first != last)
 				{
 					insert(*first);
-					first++;
+					++first;
 				}
 			}
 
@@ -325,12 +326,18 @@ namespace ft
 
 			void erase (iterator first, iterator last)
 			{
+				ft::stack<key_type> keys;
 				while (first != last)
 				{
-					erase(first);
+					keys.push(first->first);
 					first++;
 				}
-
+				while (keys.empty() == false)
+				{
+					erase(keys.top());
+					keys.pop();
+				}
+				
 			}
 
 			void clear()
@@ -436,23 +443,34 @@ namespace ft
 
 			void swap (map& x)
 			{
-				map tmp;
+				node_ptr					tm_root = _root;
+				size_type					tm_size  = _size;
+				key_compare					tm_comp = _comp;
+				bool						tm_empty = _empty;
+				allocator_type				tm_all = _all;
 
-				tmp = *this;
-				clear();
-				insert(x.begin(), x.end());
-				x.clear();
-				x.insert(tmp.begin(), tmp.end());
+				_root = x._root;
+				_size = x._size;
+				_comp = x._comp;
+				_empty = x._empty;
+				_all = x._all;
+				x._root = tm_root;
+				x._size = tm_size;
+				x._comp = tm_comp;
+				x._empty = tm_empty;
+				x._all = tm_all;
 			}
 
 		private :
 
 			node_ptr	find_node(const key_type &k) const
 			{
+				//if (_root)
+					//std::cout << _root->get_pair() << std::endl;
 				node_ptr cur = _root;
-
-				while (cur != NULL && cur->get_key() != k)
+				while (_size > 0 && cur != NULL && cur->get_key() != k)
 				{
+					//std::cout << "in " << std::endl;
 					if (_comp(k, cur->get_key()))
 					{
 						if (cur->get_left() != NULL)
