@@ -14,6 +14,7 @@
 # define EXTRAS_HPP
 
 # include <stdio.h>
+# include <iterator>
 # include <sstream>
 #include <iostream>
 
@@ -44,6 +45,27 @@ namespace ft{
 	{
 	};
 
+    template<class T, class U>
+    struct is_same { static const bool value; };
+    template<class T, class U> const bool is_same<T,U>::value = false;
+    
+    template<class T>
+    struct is_same<T, T> { static const bool value; };
+    template<class T> const bool is_same<T,T>::value = true;
+
+    template<class It>
+    struct accepted_iterator {
+        static const bool value;
+    };
+
+    template<class It>
+    const bool accepted_iterator<It>::value = 
+        !(is_integral<It>::value) && (
+        It::InputIter ||
+        is_same<typename std::iterator_traits<It>::iterator_category,
+                    std::bidirectional_iterator_tag>::value ||
+        is_same<typename std::iterator_traits<It>::iterator_category,
+                    std::random_access_iterator_tag>::value);
     //enable_if : https://en.cppreference.com/w/cpp/types/enable_if
     template<bool B, class T = void>
     struct enable_if {};

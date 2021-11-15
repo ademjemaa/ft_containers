@@ -31,6 +31,7 @@ namespace ft
         public :
         //keyword typedef is a type definition where's in "typedef X Y;" X defines Y so Y = X in syntax
             typedef T value_type;
+            typedef ft::random_access_iterator_tag iterator_category;
             typedef ptrdiff_t difference_type;
             typedef T* pointer;
             typedef T& reference;
@@ -217,7 +218,7 @@ namespace ft
             }
             template <typename InputIterator>
             vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-            typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : all(alloc), array(NULL), length(0), cap(0)
+            typename enable_if<!(is_integral<InputIterator>::value), InputIterator>::type = NULL) : all(alloc), array(NULL), length(0), cap(0)
             {
                 insert(begin(), first, last);
             }
@@ -350,7 +351,7 @@ namespace ft
             }
             template <class InputIterator>
             void assign (InputIterator first, InputIterator last,
-            typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL)
+            typename enable_if<!(is_integral<InputIterator>::value), InputIterator>::type = NULL)
             {
                 clear();
                 insert(begin(), first, last);
@@ -358,7 +359,12 @@ namespace ft
             void push_back (const value_type& val)
             {
                 if (capacity() == length)
-                    reserve(capacity() + 1);
+                {
+                    if (capacity() == 0)
+                        reserve(1);
+                    else
+                        reserve(capacity() * 2);
+                }
                 all.construct(array + length, val);
                 length++;
             }
@@ -412,7 +418,7 @@ namespace ft
             }
             template <typename InputIterator>
             void insert (iterator position, InputIterator first, InputIterator last,
-            typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL)
+            typename enable_if<!(is_integral<InputIterator>::value), InputIterator>::type = NULL)
             {
                 size_type index = position.p - array;
                 size_type count = last - first;

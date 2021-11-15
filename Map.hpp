@@ -23,7 +23,7 @@ namespace ft
     class Key,
     class T,
     class Compare = ft::less<Key>,
-    class Allocator = std::allocator<std::pair<const Key, T> > >
+    class Allocator = std::allocator<treeNode<Key, T> > >
     class map
     {
 		public :
@@ -33,7 +33,7 @@ namespace ft
 			typedef T							mapped_type;
 			typedef ft::pair<Key, T>			value_type;
 			typedef Compare						key_compare;
-			typedef std::allocator<value_type>	allocator_type;
+			typedef std::allocator<node>		allocator_type;
 			typedef	allocator_type&				reference;
 			typedef	reference					const_reference;
 			typedef allocator_type*				pointer;
@@ -63,7 +63,7 @@ namespace ft
 			map (InputIterator first, InputIterator last,
 			const key_compare& comp = key_compare(),
 			const allocator_type& alloc = allocator_type(),
-			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL) : _root(NULL), _size(0), _comp(comp), _all(alloc)
+			typename enable_if<!(is_integral<InputIterator>::value), InputIterator>::type = NULL) : _root(NULL), _size(0), _comp(comp), _all(alloc)
 			{
 				insert(first, last);
 			}
@@ -168,7 +168,8 @@ namespace ft
 				{
 					value_type	new_root(value_type(k, mapped_type()));
 					_size++;
-					node_ptr	new_node = new node(new_root);
+					node_ptr	new_node = _all.allocate(1);
+					_all.construct(new_node, node(new_root));
 					_root = new_node;
 					return (_root->get_value());
 				}
@@ -219,11 +220,12 @@ namespace ft
 
 			template <typename InputIterator>
 			void insert (InputIterator first, InputIterator last,
-			typename ft::enable_if<InputIterator::InputIter, InputIterator>::type = NULL)
+			typename enable_if<!(is_integral<InputIterator>::value), InputIterator>::type = NULL)
 			{
 				while (first != last)
 				{
 					insert(*first);
+					std::cout << "inserted " << *first << std::endl;
 					++first;
 				}
 			}
@@ -234,7 +236,8 @@ namespace ft
 				bool side;
 				if (_size == 1)
 				{
-					delete to_erase;
+					_all.destroy(to_erase);
+					_all.deallocate(to_erase, 1);
 					_size--;
 					return ;
 				}
@@ -248,7 +251,8 @@ namespace ft
 						to_erase->get_root()->set_right(NULL);
 					else if (to_erase->get_root()->get_left() == to_erase)
 						to_erase->get_root()->set_left(NULL);
-					delete to_erase;
+					_all.destroy(to_erase);
+					_all.deallocate(to_erase, 1);
 					_size--;
 				}
 				else if (to_erase->get_left() == NULL)
@@ -268,7 +272,8 @@ namespace ft
 						to_erase->get_root()->set_left(to_erase->get_right());
 						to_erase->get_right()->set_root(to_erase->get_root());
 					}
-					delete to_erase;
+					_all.destroy(to_erase);
+					_all.deallocate(to_erase, 1);
 					_size--;
 				}
 				else if (to_erase->get_right() == NULL)
@@ -283,7 +288,8 @@ namespace ft
 						to_erase->get_root()->set_left(to_erase->get_left());
 						to_erase->get_left()->set_root(to_erase->get_root());
 					}
-					delete to_erase;
+					_all.destroy(to_erase);
+					_all.deallocate(to_erase, 1);;
 					_size--;
 				}
 				else
@@ -310,7 +316,8 @@ namespace ft
 						succParent->get_right()->set_root(succParent);
 					}
 					to_erase->set_pair(succ->get_pair());
-					delete succ;
+					_all.destroy(succ);
+					_all.deallocate(succ, 1);
 					_size--;
 				}
 			}
@@ -497,7 +504,8 @@ namespace ft
 						insert_node(root->get_left(), k);
 					else
 					{
-						node_ptr 	inser = new node(k);
+						node_ptr 	inser = _all.allocate(1);
+						_all.construct(inser, node(k));
 						root->set_left(inser);
 						inser->set_root(root);
 						return (inser);
@@ -509,7 +517,8 @@ namespace ft
 						insert_node(root->get_right(), k);
 					else
 					{
-						node_ptr 	inser = new node(k);
+						node_ptr 	inser = _all.allocate(1);
+						_all.construct(inser, node(k));
 						root->set_right(inser);
 						inser->set_root(root);
 						return (inser);
