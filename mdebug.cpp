@@ -6,7 +6,7 @@
 /*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:50 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/11/01 20:58:32 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/15 17:07:58 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <iostream>
 #include <iterator>
 #include <map>
-#include "Map.hpp"
+#include "map.hpp"
 
 void	brackets_test(void)
 {

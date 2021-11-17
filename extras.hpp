@@ -6,7 +6,7 @@
 /*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:47 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/11/01 21:03:24 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/15 17:17:45 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace ft{
     template<class T, class U>
     struct is_same { static const bool value; };
     template<class T, class U> const bool is_same<T,U>::value = false;
-    
+
     template<class T>
     struct is_same<T, T> { static const bool value; };
     template<class T> const bool is_same<T,T>::value = true;
@@ -59,7 +59,7 @@ namespace ft{
     };
 
     template<class It>
-    const bool accepted_iterator<It>::value = 
+    const bool accepted_iterator<It>::value =
         !(is_integral<It>::value) && (
         It::InputIter ||
         is_same<typename std::iterator_traits<It>::iterator_category,

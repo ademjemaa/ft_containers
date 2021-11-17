@@ -1,393 +1,117 @@
-#include <stack>
-#include <vector>
-#include <map>
-
 #include <iostream>
 #include <string>
 #include <deque>
-
+#if 0 //CREATE A REAL STL EXAMPLE
+	#include <map>
+	#include <stack>
+	#include <vector>
+	namespace ft = std;
+#else
+	#include "map.hpp"
+	#include "stack.hpp"
+	#include "vector.hpp"
+#endif
 
 #include <stdlib.h>
 
-void	brackets_test(void)
+#define MAX_RAM 4294967296
+#define BUFFER_SIZE 4096
+struct Buffer
 {
-	std::map<int, int>	int_map1;
-	std::map<std::string, std::string>	string_map1;
-	std::cout << "  ####\nSTD TEST\n  ####" << std::endl;
-	int_map1[1] = 0;
-	std::cout << "int_map[1] = " << int_map1[1] << std::endl;
-	int_map1[1] = 10;
-	std::cout << "int_map[1] = " << int_map1[1] << std::endl;
-	int_map1[2] = 20;
-	std::cout << "int_map[1] = " << int_map1[2] << std::endl;
-	std::cout << "int_map size = " << int_map1.size() << std::endl;
-	std::cout << "string_map size = " << string_map1.size() << std::endl;
-	string_map1["NUMBAONE"] = "china";
-	std::cout << "string_map[\"NUMBAONE\"] = " << string_map1["NUMBAONE"] << std::endl;
-	std::cout << "string_map size = " << string_map1.size() << std::endl;
-	std::cout << "\n\n\n" << std::endl;
-}
+	int idx;
+	char buff[BUFFER_SIZE];
+};
 
-void	insert_test(void)
-{
-	std::map<int, int>	int_map1;
-	std::map<int, int> swap_map1;
-	std::map<int, int>	cpy_int_map1;
-	std::map<std::string, std::string>	string_map1;
-	std::cout << "  ####\nSTD TEST\n  ####" << std::endl;
-	int_map1[1] = 0;
-	std::cout << "int_map[1] = " << int_map1[1] << std::endl;
-	int_map1[1] = 10;
-	std::cout << "int_map[1] = " << int_map1[1] << std::endl;
-	int_map1[2] = 20;
-	std::cout << "int_map[2] = " << int_map1[2] << std::endl;
-	std::cout << "int_map size = " << int_map1.size() << std::endl;
-	std::cout << "string_map size = " << string_map1.size() << std::endl;
-	string_map1["NUMBAONE"] = "china";
-	std::cout << "string_map[\"NUMBAONE\"] = " << string_map1["NUMBAONE"] << std::endl;
-	std::cout << "string_map size = " << string_map1.size() << std::endl;
-	int_map1.insert(std::make_pair(12, 15));
-	std::cout << "int_map[12] = " << int_map1[12] << std::endl;
-	cpy_int_map1.insert(int_map1.begin(), int_map1.end());
-	std::cout << "cpy_int_map :" << std::endl;
-	for (std::map<int, int>::iterator it = cpy_int_map1.begin(); it != cpy_int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	cpy_int_map1.insert(++(cpy_int_map1.begin()), std::make_pair(30, 20));
-	std::cout << "cpy_int_map after insertion by it:" << std::endl;
-	for (std::map<int, int>::iterator it = cpy_int_map1.begin(); it != cpy_int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	swap_map1 = cpy_int_map1;
-	std::cout << "swap_map1 before: " << std::endl;
-	for (std::map<int, int>::iterator it = swap_map1.begin(); it != swap_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	std::cout << "swap_map1 after: " << std::endl;
-	int_map1.swap(swap_map1);
-	for (std::map<int, int>::iterator it = swap_map1.begin(); it != swap_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	std::cout << "int_map1 after: " << std::endl;
-	for (std::map<int, int>::iterator it = int_map1.begin(); it != int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-}
 
-void	erase_test(void)
-{
-	std::map<int, int>	int_map1;
-	std::map<int, int>	cpy_int_map1;
-	std::map<int, int> swap_map1;
-	std::map<std::string, std::string>	string_map1;
-	std::cout << "  ####\nSTD TEST\n  ####" << std::endl;
-	int_map1[1] = 0;
-	std::cout << "int_map[1] = " << int_map1[1] << std::endl;
-	int_map1[1] = 10;
-	std::cout << "int_map[1] = " << int_map1[1] << std::endl;
-	int_map1[2] = 20;
-	std::cout << "int_map[2] = " << int_map1[2] << std::endl;
-	std::cout << "int_map size = " << int_map1.size() << std::endl;
-	std::cout << "string_map size = " << string_map1.size() << std::endl;
-	string_map1["NUMBAONE"] = "china";
-	std::cout << "string_map[\"NUMBAONE\"] = " << string_map1["NUMBAONE"] << std::endl;
-	std::cout << "string_map size = " << string_map1.size() << std::endl;
-	int_map1.insert(std::make_pair(12, 15));
-	std::cout << "int_map[12] = " << int_map1[12] << std::endl;
-	cpy_int_map1.insert(int_map1.begin(), int_map1.end());
-	std::cout << "cpy_int_map :" << std::endl;
-	for (std::map<int, int>::iterator it = cpy_int_map1.begin(); it != cpy_int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	cpy_int_map1.insert(++(cpy_int_map1.begin()), std::make_pair(30, 20));
-	std::cout << "cpy_int_map after insertion by it:" << std::endl;
-	for (std::map<int, int>::iterator it = cpy_int_map1.begin(); it != cpy_int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	swap_map1 = cpy_int_map1;
-	std::cout << "swap_map1 before: " << std::endl;
-	for (std::map<int, int>::iterator it = swap_map1.begin(); it != swap_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	std::cout << "swap_map1 after: " << std::endl;
-	int_map1.swap(swap_map1);
-	for (std::map<int, int>::iterator it = swap_map1.begin(); it != swap_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	std::cout << "int_map1 after: " << std::endl;
-	for (std::map<int, int>::iterator it = int_map1.begin(); it != int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	swap_map1.erase(12);
-	int_map1.erase(++(int_map1.begin()), --(int_map1.end()));
-	std::cout << "swap_map after erasing key 12: " << std::endl;
-	for (std::map<int, int>::iterator it = swap_map1.begin(); it != swap_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	swap_map1.erase(swap_map1.begin());
-	std::cout << "swap_map after erasing begin: " << std::endl;
-	for (std::map<int, int>::iterator it = swap_map1.begin(); it != swap_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	std::cout << "int_map after erasing begin + 1 until end - 1: " << std::endl;
-	for (std::map<int, int>::iterator it = int_map1.begin(); it != int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	cpy_int_map1.clear();
-	std::cout << "cpy_int_map1 size after clear : " << cpy_int_map1.size() <<std::endl;
-}
+#define COUNT (MAX_RAM / (int)sizeof(Buffer))
 
-void	find_test(void)
+template<typename T>
+class MutantStack : public ft::stack<T>
 {
-	std::map<int, int>	int_map1;
-	std::map<int, int> swap_map1;
-	std::map<int, int>	cpy_int_map1;
-	std::map<std::string, std::string>	string_map1;
-	std::cout << "  ####\nSTD TEST\n  ####" << std::endl;
-	std::cout << "wut" << std::endl;
-	int_map1[1] = 0;
-	std::cout << "int_map[1] = " << int_map1[1] << std::endl;
-	int_map1[1] = 10;
-	std::cout << "int_map[1] = " << int_map1[1] << std::endl;
-	int_map1[2] = 20;
-	std::cout << "int_map[2] = " << int_map1[2] << std::endl;
-	std::cout << "int_map size = " << int_map1.size() << std::endl;
-	std::cout << "string_map size = " << string_map1.size() << std::endl;
-	string_map1["NUMBAONE"] = "china";
-	std::cout << "string_map[\"NUMBAONE\"] = " << string_map1["NUMBAONE"] << std::endl;
-	std::cout << "string_map size = " << string_map1.size() << std::endl;
-	int_map1.insert(std::make_pair(12, 15));
-	std::cout << "int_map[12] = " << int_map1[12] << std::endl;
-	cpy_int_map1.insert(int_map1.begin(), int_map1.end());
-	std::cout << "cpy_int_map :" << std::endl;
-	for (std::map<int, int>::iterator it = cpy_int_map1.begin(); it != cpy_int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	cpy_int_map1.insert(++(cpy_int_map1.begin()), std::make_pair(30, 20));
-	std::cout << "cpy_int_map after insertion by it:" << std::endl;
-	for (std::map<int, int>::iterator it = cpy_int_map1.begin(); it != cpy_int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	swap_map1 = cpy_int_map1;
-	std::cout << "swap_map1 before: " << std::endl;
-	for (std::map<int, int>::iterator it = swap_map1.begin(); it != swap_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	std::cout << "swap_map1 after: " << std::endl;
-	int_map1.swap(swap_map1);
-	for (std::map<int, int>::iterator it = swap_map1.begin(); it != swap_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	std::cout << "int_map1 after: " << std::endl;
-	for (std::map<int, int>::iterator it = int_map1.begin(); it != int_map1.end(); it++)
-		std::cout << it->first << " : " << it->second << std::endl;
-	std::cout << "inserting pair elements into int_map" << std::endl;
-	for (int i = 0; i < 20; i++)
-		if (i % 2 == 0)
-			int_map1[i] = i + 1;
-	for (int i = 0; i < 20; i++)
-		if (int_map1.find(i) != int_map1.end())
-			std::cout << "key " << i << " found, second : " << int_map1[i] << std::endl;
-	std::map<int, int>::iterator it1;
-	it1 = cpy_int_map1.lower_bound(2);
-	std::cout << "lower bound of key 2 " << it1->second << std::endl;
-	it1 = cpy_int_map1.upper_bound(2);
-	std::cout << "upper bound of key 2 " << it1->second << std::endl;
-	std::cout << "count, which is a completely useless function due to the fact that this container does not allow duplicates, thus making the return of this function either 1 or 0 (found or not found) : ";
-	std::cout << cpy_int_map1.count(2) << std::endl;
-	std::cout << ((cpy_int_map1.equal_range(2)).first)->first << std::endl;
-}
-
-void	compare_test(void)
-{
-	std::cout << "  ####\nSTD TEST\n  ####" << std::endl;
-	std::map<int, int> firstmap1;
-	for (int i = 0; i < 35; i++)
-		if (i % 3 == 0)
-			firstmap1[i] = i + 5;
-	std::map<int, int>::iterator it1;
-	std::pair<int, int> pr1;
-	it1 = firstmap1.end();
-	it1--;
-	pr1 = *it1;
-	it1 = firstmap1.begin();
-	std::cout << "value comparing (which uses std::less) compares two pairs with said function through keys" << std::endl;
-	while (firstmap1.value_comp()(*it1, pr1))
+public:
+	MutantStack() {}
+	MutantStack(const MutantStack<T>& src) { *this = src; }
+	MutantStack<T>& operator=(const MutantStack<T>& rhs) 
 	{
-		std::cout << it1->first << " <= " << pr1.first << std::endl;
-		it1++;
+		this->c = rhs.c;
+		return *this;
 	}
-	it1 = firstmap1.begin();
-	std::cout << "key comparing (which uses std::less) compares two keys with said function" << std::endl;
-	while (firstmap1.key_comp()(it1->first, pr1.first))
+	~MutantStack() {}
+
+	typedef typename ft::stack<T>::container_type::iterator iterator;
+
+	iterator begin() { return this->c.begin(); }
+	iterator end() { return this->c.end(); }
+};
+
+int main(int argc, char** argv) {
+	if (argc != 2)
 	{
-		std::cout << it1->first << " <= " << pr1.first << std::endl;
-		it1++;
+		std::cerr << "Usage: ./test seed" << std::endl;
+		std::cerr << "Provide a seed please" << std::endl;
+		std::cerr << "Count value:" << COUNT << std::endl;
+		return 1;
 	}
-	std::cout << "reverse iterator test while at it" << std::endl;
-	for (std::map<int, int>::reverse_iterator it2 = firstmap1.rbegin(); it2 != firstmap1.rend(); it2++)
-		std::cout << it2->first << " " << it2->second << std::endl;
-}
+	const int seed = atoi(argv[1]);
+	srand(seed);
 
-void	std_map_debug(void)
-{
-	brackets_test();
-	insert_test();
-	erase_test();
-	find_test();
-	compare_test();
-}
+	ft::vector<std::string> vector_str;
+	ft::vector<int> vector_int;
+	ft::stack<int> stack_int;
+	ft::vector<Buffer> vector_buffer;
+	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+	ft::map<int, int> map_int;
 
-void	std_vector_debug(void)
-{
-	std::vector<int> vec(40);
-
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < COUNT; i++)
 	{
-		if (i % 8)
-			vec[i] = i * 2;
-		else
-			vec[i] = i - 2;
+		vector_buffer.push_back(Buffer());
 	}
-	for (int i = 0; i < 40; i ++)
-		std::cout << vec[i] << std::endl;
-	std::vector<int>	second;
-	second.assign(++(vec.begin()), (vec.end() - 15));
-	std::cout << "second vector after assign" << std::endl;
-	for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
-		std::cout << *it << std::endl;
-	second.assign(15, 22);
-	std::cout << "second after 15 22s were assigned to it" << std::endl;
-	for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
-		std::cout << *it << std::endl;
-	second.pop_back();
-	second.pop_back();
-	second.pop_back();
-	second.pop_back();
-	second.push_back(33);
-	second.push_back(43);
-	std::cout << "second after popping 4 times and pushing 33/43" << std::endl;
-	for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
-		std::cout << *it << std::endl;
-	second.insert(second.end()--, 55);
-	second.insert(second.end() - 2, 3, 6);
-	second.insert(second.begin(), vec.begin() + 5, vec.begin() + 10);
-	std::cout << "second after second.insert(second.end()--, 55), second.insert(second.end() - 2, 3, 6), second.insert(second.begin(), vec.begin() + 5, vec.begin() + 10)" << std::endl;
-	for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
-		std::cout << *it << std::endl;
-	std::cout << "size of vector so far : " << second.size() << std::endl;
-	second.swap(vec);
-	std::cout << "size and content of second vector after swapping with vec : " << second.size() << std::endl;
-	for (std::vector<int>::iterator it = second.begin(); it != second.end(); ++it)
-		std::cout << *it << std::endl;
-	std::cout << "size and content of vec vector after swapping with second : " << vec.size() << std::endl;
-	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
-		std::cout << *it << std::endl;
-	std::cout << "vec but with a rev iterator " << std::endl;
-	for (std::vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
-		std::cout << *it << std::endl;
-	vec.resize(10, 15);
-	std::cout << "vec after resizing to 10,15 " << std::endl;
-	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
-		std::cout << *it << std::endl;
-	std::cout << "vec capacity : " << vec.capacity() <<std::endl;
-	std::cout << "vec front : " << vec.front() << " vec back : " << vec.back() << std::endl;
-	vec.erase(vec.begin() + 1);
-	vec.erase(vec.begin() + 1, vec.end() - 5);
-	std::cout << "vec after erassing " << std::endl;
-	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
-		std::cout << *it << std::endl;
-}
 
-void	stack_functions_test(void)
-{
-
-	std::stack<int>	stack_one;
-	std::stack<int>	stack_two;
-
-	stack_one.push(10);
-	stack_one.push(11);
-	stack_one.push(12);
-	stack_one.push(122);
-	stack_one.push(123);
-	stack_one.push(1233);
-	stack_one.push(1234);
-	stack_one.push(12344);
-
-	stack_two.push(10);
-	stack_two.push(11);
-	stack_two.push(12);
-	stack_two.push(122);
-	stack_two.push(123);
-	stack_two.push(1233);
-	stack_two.push(1234);
-	stack_two.push(12344);
-	stack_two.push(12345);
-
-	std::cout << "stack_one size == " << stack_one.size() << std::endl;
-	std::cout << "stack_two size == " << stack_two.size() << std::endl;
-	std::cout << "stack content : (showing top then poping until stack.empty() == true" << std::endl;
-	while (stack_one.empty() == false)
+	for (int i = 0; i < COUNT; i++)
 	{
-		std::cout << stack_one.top() << std::endl;
-		stack_one.pop();
+		const int idx = rand() % COUNT;
+		vector_buffer[idx].idx = 5;
 	}
-	std::cout << "stack_one size after popping all elements : " << stack_one.size() << std::endl;
-}
+	ft::vector<Buffer>().swap(vector_buffer);
 
-void	stack_operators_test(void)
-{
-	std::stack<int>	stack_one;
-	std::stack<int>	stack_two;
-
-	stack_one.push(10);
-	stack_one.push(11);
-	stack_one.push(12);
-	stack_one.push(122);
-	stack_one.push(123);
-	stack_one.push(1233);
-	stack_one.push(1234);
-	stack_one.push(12344);
-
-	stack_two.push(10);
-	stack_two.push(11);
-	stack_two.push(12);
-	stack_two.push(122);
-	stack_two.push(123);
-	stack_two.push(1233);
-	stack_two.push(1234);
-	stack_two.push(12344);
-	stack_two.push(12345);
-
-	std::cout << "stack_one == stack_two : " << std::boolalpha << (stack_one == stack_two) << std::endl;
-	std::cout << "stack_one != stack_two : " << std::boolalpha << (stack_one != stack_two) << std::endl;
-	std::cout << "stack_one > stack_two : " << std::boolalpha << (stack_one > stack_two) << std::endl;
-	std::cout << "stack_one < stack_two : " << std::boolalpha << (stack_one < stack_two) << std::endl;
-	std::cout << "stack_one >= stack_two : " << std::boolalpha << (stack_one >= stack_two) << std::endl;
-	std::cout << "stack_one <= stack_two : " << std::boolalpha << (stack_one <= stack_two) << std::endl;
-	std::cout << "popping last element of stack two " << std::endl;
-	stack_two.pop();
-	std::cout << "stack_one == stack_two : " << std::boolalpha << (stack_one == stack_two) << std::endl;
-	std::cout << "stack_one != stack_two : " << std::boolalpha << (stack_one != stack_two) << std::endl;
-	std::cout << "stack_one > stack_two : " << std::boolalpha << (stack_one > stack_two) << std::endl;
-	std::cout << "stack_one < stack_two : " << std::boolalpha << (stack_one < stack_two) << std::endl;
-	std::cout << "stack_one >= stack_two : " << std::boolalpha << (stack_one >= stack_two) << std::endl;
-	std::cout << "stack_one <= stack_two : " << std::boolalpha << (stack_one <= stack_two) << std::endl;
-	std::cout << "printing and popping all elements of both stacks " << std::endl;
-	std::cout << "stack_one : " << std::endl;
-	while (stack_one.empty() == false)
+	try
 	{
-		std::cout << stack_one.top() << std::endl;
-		stack_one.pop();
+		for (int i = 0; i < COUNT; i++)
+		{
+			const int idx = rand() % COUNT;
+			vector_buffer.at(idx);
+			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+		}
 	}
-	std::cout << "stack_two : " << std::endl;
-	while (stack_two.empty() == false)
+	catch(const std::exception& e)
 	{
-		std::cout << stack_two.top() << std::endl;
-		stack_two.pop();
+		//NORMAL ! :P
 	}
-	std::cout << "stack_one == stack_two : " << std::boolalpha << (stack_one == stack_two) << std::endl;
-	std::cout << "stack_one != stack_two : " << std::boolalpha << (stack_one != stack_two) << std::endl;
-	std::cout << "stack_one > stack_two : " << std::boolalpha << (stack_one > stack_two) << std::endl;
-	std::cout << "stack_one < stack_two : " << std::boolalpha << (stack_one < stack_two) << std::endl;
-	std::cout << "stack_one >= stack_two : " << std::boolalpha << (stack_one >= stack_two) << std::endl;
-	std::cout << "stack_one <= stack_two : " << std::boolalpha << (stack_one <= stack_two) << std::endl;
-	std::cout << "stack_one empty : " << std::boolalpha << stack_one.empty() << std::endl;
-	std::cout << "stack_two empty : " << std::boolalpha << stack_two.empty() << std::endl;
-}
+	
+	for (int i = 0; i < COUNT; ++i)
+	{
+		map_int.insert(ft::make_pair(i, i));
+	}
 
-void	std_stack_debug(void)
-{
-	stack_functions_test();
-	stack_operators_test();
-}
+	int sum = 0;
+	for (int i = 0; i < 10000; i++)
+	{
+		int access = rand();
+		sum += map_int[access];
+	}
+	std::cout << "should be constant with the same seed: " << sum << std::endl;
 
-int main(void)
-{
-	std_map_debug();
-	std_vector_debug();
-	std_stack_debug();
+	{
+		std::cout << "enter copy" << std::endl;
+		ft::map<int, int> copy = map_int;
+	}
+	MutantStack<char> iterable_stack;
+	for (char letter = 'a'; letter <= 'z'; letter++)
+		iterable_stack.push(letter);
+	for (MutantStack<char>::iterator it = iterable_stack.begin(); it != iterable_stack.end(); it++)
+	{
+		std::cout << *it;
+	}
+	std::cout << std::endl;
+	return (0);
 }

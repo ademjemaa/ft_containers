@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Map.hpp                                            :+:      :+:    :+:   */
+/*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:12 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/11/01 21:09:49 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/15 17:36:38 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "extras.hpp"
 #include "Iterator.hpp"
-#include "Stack.hpp"
+#include "stack.hpp"
 
 namespace ft
 {
@@ -171,6 +171,8 @@ namespace ft
 					node_ptr	new_node = _all.allocate(1);
 					_all.construct(new_node, node(new_root));
 					_root = new_node;
+					_rightmost = _root;
+					_leftmost = _root;
 					return (_root->get_value());
 				}
 				if (found->get_key() == k)
@@ -189,7 +191,10 @@ namespace ft
 			{
 				node_ptr found = find_node(val.first);
 				if (_size == 0)
+				{
 					(*this)[val.first] = val.second;
+
+				}
 				else if (found->get_key() == val.first)
 				{
 					iterator	it(found);
@@ -225,15 +230,22 @@ namespace ft
 				while (first != last)
 				{
 					insert(*first);
-					std::cout << "inserted " << *first << std::endl;
 					++first;
 				}
 			}
+			T& at( const Key& key )
+			{
+				node_ptr to_find;
 
+				to_find = find_node(key);
+				if (to_find->get_key() == key)
+					return (to_find);
+				else
+					throw (std::out_of_range("out of range"));
+			}
 			void erase (iterator position)
 			{
 				node_ptr to_erase = find_node((*position).first);
-				bool side;
 				if (_size == 1)
 				{
 					_all.destroy(to_erase);
@@ -241,10 +253,6 @@ namespace ft
 					_size--;
 					return ;
 				}
-				if (to_erase->get_root() != NULL && to_erase->get_root()->get_right() == to_erase)
-					side = true;
-				else
-					side = false;
 				if (to_erase->get_right() == NULL && to_erase->get_left() == NULL)
 				{
 					if (to_erase->get_root()->get_right() == to_erase)
@@ -320,6 +328,7 @@ namespace ft
 					_all.deallocate(succ, 1);
 					_size--;
 				}
+
 			}
 
 			size_type erase (const key_type& k)
@@ -344,12 +353,12 @@ namespace ft
 					erase(keys.top());
 					keys.pop();
 				}
-				
+
 			}
 
 			void clear()
 			{
-				while (!empty())
+				while(_size != 0)
 					erase(begin());
 			}
 
@@ -455,29 +464,38 @@ namespace ft
 				key_compare					tm_comp = _comp;
 				bool						tm_empty = _empty;
 				allocator_type				tm_all = _all;
+				node_ptr					tm_rightmost = _rightmost;
+				node_ptr					tm_leftmost = _leftmost;
+	
 
 				_root = x._root;
 				_size = x._size;
 				_comp = x._comp;
 				_empty = x._empty;
 				_all = x._all;
+				_rightmost = x._rightmost;
+				_leftmost = x._leftmost;
+
 				x._root = tm_root;
 				x._size = tm_size;
 				x._comp = tm_comp;
 				x._empty = tm_empty;
 				x._all = tm_all;
+				x._rightmost = tm_rightmost;
+				x._leftmost = tm_leftmost;
+
 			}
 
 		private :
+			node_ptr _rightmost;
+			node_ptr _leftmost;
 
 			node_ptr	find_node(const key_type &k) const
 			{
-				//if (_root)
-					//std::cout << _root->get_pair() << std::endl;
 				node_ptr cur = _root;
+
 				while (_size > 0 && cur != NULL && cur->get_key() != k)
 				{
-					//std::cout << "in " << std::endl;
 					if (_comp(k, cur->get_key()))
 					{
 						if (cur->get_left() != NULL)
@@ -498,30 +516,57 @@ namespace ft
 
 			node_ptr	insert_node(node_ptr root, const value_type &k)
 			{
-				if (_comp(k.first, root->get_key()))
+				int	inserted = 0;
+
+				if (_size > 0 && _comp(k.first, _leftmost->get_key()))
 				{
-					if (root->get_left() != NULL)
-						insert_node(root->get_left(), k);
-					else
-					{
-						node_ptr 	inser = _all.allocate(1);
-						_all.construct(inser, node(k));
-						root->set_left(inser);
-						inser->set_root(root);
-						return (inser);
-					}
+					node_ptr 	inser = _all.allocate(1);
+					_all.construct(inser, node(k));
+					_leftmost->set_left(inser);
+					inser->set_root(_leftmost);
+					_leftmost = inser;
+					inserted = 1;
+					return (inser);
 				}
-				else
+				if (_size > 0 && _comp(_rightmost->get_key(), k.first))
 				{
-					if (root->get_right() != NULL)
-						insert_node(root->get_right(), k);
+					node_ptr 	inser = _all.allocate(1);
+					_all.construct(inser, node(k));
+					_rightmost->set_right(inser);
+					inser->set_root(_rightmost);
+					_rightmost = inser;
+					inserted = 1;
+					return (inser);
+				}
+				while (inserted == 0)
+				{
+					if (_comp(k.first, root->get_key()))
+					{
+						if (root->get_left() != NULL)
+							root = root->get_left();
+						else
+						{
+							node_ptr 	inser = _all.allocate(1);
+							_all.construct(inser, node(k));
+							root->set_left(inser);
+							inser->set_root(root);
+							inserted = 1;
+							return (inser);
+						}
+					}
 					else
 					{
-						node_ptr 	inser = _all.allocate(1);
-						_all.construct(inser, node(k));
-						root->set_right(inser);
-						inser->set_root(root);
-						return (inser);
+						if (root->get_right() != NULL)
+							root = root->get_right();
+						else
+						{
+							node_ptr 	inser = _all.allocate(1);
+							_all.construct(inser, node(k));
+							root->set_right(inser);
+							inser->set_root(root);
+							inserted = 1;
+							return (inser);
+						}
 					}
 				}
 				return (NULL);

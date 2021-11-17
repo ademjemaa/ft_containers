@@ -6,15 +6,14 @@
 /*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:25 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/11/01 19:33:32 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/15 17:07:45 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Vector.hpp"
 #include <vector>
-#include "Stack.hpp"
-#include "Vector.hpp"
-#include "Map.hpp"
+#include "stack.hpp"
+#include "vector.hpp"
+#include "map.hpp"
 #include <map>
 
 #include <iostream>

@@ -21,7 +21,7 @@ OBJS	=	$(SRCS:.cpp=.o)
 
 CC		=	clang++
 
-FLAGS	=	-std=c++98
+FLAGS	=	-Wall -Wextra -Werror -std=c++98
 
 %.o:		%.cpp
 			$(CC) $(FLAGS) -c $< -o $@

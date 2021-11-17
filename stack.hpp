@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Stack.hpp                                          :+:      :+:    :+:   */
+/*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:19 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/10/30 21:58:54 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/15 17:25:38 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_HPP
 #define STACK_HPP
 
-#include "Vector.hpp"
+#include "vector.hpp"
 
 namespace ft{
     template <typename T, typename Container = vector<T> > class stack
@@ -23,36 +23,36 @@ namespace ft{
             typedef T value_type;
             typedef Container container_type;
             typedef size_t size_type;
-        private :
-            container_type ctnr;
+        protected :
+            container_type  c;
         public :
-            stack(const container_type& ctnr = container_type()) : ctnr(ctnr){}
+            stack(const container_type& ctnr = container_type()) : c(ctnr){}
             ~stack(){};
-            stack(const stack<T, Container> &st) : ctnr(st.ctnr) {}
+            stack(const stack<T, Container> &st) : c(st.c) {}
             stack<T, Container> &operator=(const stack<T, Container> &st)
             {
-                ctnr = st.ctnr;
+                c = st.ctnr;
                 return *this;
             }
             bool empty() const
             {
-                return (ctnr.empty());
+                return (c.empty());
             }
             size_type size() const
             {
-                return (ctnr.size());
+                return (c.size());
             }
             value_type  &top()
             {
-                return (ctnr.back());
+                return (c.back());
             }
             void push (const value_type& val)
             {
-                ctnr.push_back(val);
+                c.push_back(val);
             }
             void pop()
             {
-                ctnr.pop_back();
+                c.pop_back();
             }
             template<typename T1 ,typename Container1>
             friend bool operator==(const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs );
@@ -64,7 +64,7 @@ namespace ft{
     template<typename T, typename Container >
     bool operator==(const stack<T,Container>& lhs, const stack<T,Container>& rhs )
     {
-        return (lhs.ctnr == rhs.ctnr);
+        return (lhs.c == rhs.c);
     }
 
     template<typename T, typename Container >
@@ -76,7 +76,7 @@ namespace ft{
     template<typename T, typename Container >
     bool operator<(const stack<T,Container>& lhs, const stack<T,Container>& rhs )
     {
-        return (lhs.ctnr < rhs.ctnr);
+        return (lhs.c < rhs.c);
     }
 
     template<typename T, typename Container >

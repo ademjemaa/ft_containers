@@ -6,14 +6,14 @@
 /*   By: adjemaa <adjemaa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:55:21 by adjemaa           #+#    #+#             */
-/*   Updated: 2021/11/01 19:29:02 by adjemaa          ###   ########.fr       */
+/*   Updated: 2021/11/15 17:08:29 by adjemaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <vector>
 #include <string>
 #include <iostream>
-#include "Vector.hpp"
+#include "vector.hpp"
 
 void	vec_insert_test(void)
 {
