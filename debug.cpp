@@ -62,7 +62,7 @@ void	vec_insert_test(void)
 	for (ft::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
 		std::cout << *it << std::endl;
 	std::cout << "vec but with a rev iterator " << std::endl;
-	for (ft::vector<int>::rev it = vec.rbegin(); it != vec.rend(); it++)
+	for (ft::vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
 		std::cout << *it << std::endl;
 	vec.resize(10, 15);
 	std::cout << "vec after resizing to 10,15 " << std::endl;

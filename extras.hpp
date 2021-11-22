@@ -387,7 +387,17 @@ namespace ft{
 				return (_ptr->get_pair());
 			}
 
+            reference operator*() const
+			{
+				return (_ptr->get_pair());
+            }
+
 			pointer operator->()
+			{
+				return (&(_ptr->get_pair()));
+			}
+
+            pointer operator->() const
 			{
 				return (&(_ptr->get_pair()));
 			}
@@ -419,6 +429,8 @@ namespace ft{
 			}
 
             static const bool InputIter = true;
+            template <typename _Tkey, typename _Tvalue>
+            friend class mapConstIterator;
 	};
 	template <typename Tkey, typename Tvalue >
     class	mapConstIterator
@@ -439,6 +451,15 @@ namespace ft{
 			mapConstIterator(ptr ptr) {
             _ptr = ptr; _end = false; _root = ptr;}
 			mapConstIterator(const mapConstIterator &cpy)
+            {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
+                _root = cpy._root;
+                _end = cpy._end;
+            }
+            mapConstIterator(const mapIterator<Tkey, Tvalue> &cpy)
             {
                 if (cpy._end == true)
                     _ptr = new node(*(cpy._ptr));

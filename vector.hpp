@@ -43,6 +43,7 @@ namespace ft
             VectorIterator(pointer e) : p(e){}
             VectorIterator() : p(NULL) {}
             VectorIterator(const It &elem) : p(elem.p) {}
+            VectorIterator(It &elem) : p(elem.p){}
             ~VectorIterator() {}
             It &operator=(const It &elem)
             {
@@ -196,9 +197,9 @@ namespace ft
             typedef const T *const_pointer;
             typedef const T &const_reference;
             typedef VectorIterator<T> iterator;
-            typedef VectorIterator<const T> const_iterator;
-            typedef reverse_iterator<iterator> rev;
-            typedef reverse_iterator<const iterator> const_rev;
+            typedef VectorIterator<T> const_iterator;
+            typedef reverse_iterator<iterator> reverse_iterator;
+            typedef reverse_iterator const_reverse_iterator;
         private :
             Allocator all;
             pointer array;
@@ -254,21 +255,21 @@ namespace ft
             {
                 return array + length;
             }
-            rev rbegin()
+            reverse_iterator rbegin()
             {
-                return reverse_iterator<VectorIterator<T> >(--end());
+                return ft::reverse_iterator<VectorIterator<T> >(--end());
             }
-            const_rev rbegin() const
+            const_reverse_iterator rbegin() const
             {
-                return (reverse_iterator<VectorIterator<T> >(--end()));
+                return (ft::reverse_iterator<VectorIterator<T> >(--end()));
             }
-            rev rend()
+            reverse_iterator rend()
             {
-                return reverse_iterator<VectorIterator<T> >(--begin());
+                return ft::reverse_iterator<VectorIterator<T> >(--begin());
             }
-            const_rev rend() const
+            const_reverse_iterator rend() const
             {
-                return reverse_iterator<VectorIterator<T> >(--begin());
+                return ft::reverse_iterator<VectorIterator<T> >(--begin());
             }
             size_type size() const
             {
