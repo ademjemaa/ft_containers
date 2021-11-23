@@ -572,6 +572,26 @@ namespace ft
 				return (NULL);
 			}
     };
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator==(const 	map<Key,T,Compare,Alloc>& lhs,
+                 	const 	map<Key,T,Compare,Alloc>& rhs )
+	{
+		if (lhs.size() == rhs.size())
+		{
+			typename ft::map<Key, T>::iterator it = lhs.begin();
+			typename ft::map<Key, T>::iterator it2 = rhs.begin();
+			while(*it == *it2)
+			{
+				it++;
+				it2++;
+			}
+			if (it == lhs.end() && it2 == rhs.end())
+				return (true);
+			return (false);
+		}
+		else
+			return (false);
+	}
 }
 
 #endif

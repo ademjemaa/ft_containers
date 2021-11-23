@@ -267,7 +267,8 @@ namespace ft{
                 return (current);
             }
     };
-
+    template <typename Tkey, typename Tvalue >
+    class mapConstIterator;
     template <typename Tkey, typename Tvalue >
     class	mapIterator
     {
@@ -285,6 +286,15 @@ namespace ft{
 			mapIterator(void) : _ptr(NULL), _root(NULL) ,_end(false) {};
 			mapIterator(ptr ptr) {_ptr = ptr; _end = false; _root = ptr;}
 			mapIterator(const mapIterator &cpy)
+            {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
+                _root = cpy._root;
+                _end = cpy._end;
+            }
+            mapIterator(const mapConstIterator<Tkey, Tvalue> &cpy)
             {
                 if (cpy._end == true)
                     _ptr = new node(*(cpy._ptr));
@@ -589,6 +599,8 @@ namespace ft{
 			}
 
             static const bool InputIter = true;
+            template <typename _Tkey, typename _Tvalue>
+            friend class mapIterator;
 	};
     template <typename Tkey, typename Tvalue >
     class   mapRevIterator
