@@ -580,7 +580,7 @@ namespace ft
 		{
 			typename ft::map<Key, T>::iterator it = lhs.begin();
 			typename ft::map<Key, T>::iterator it2 = rhs.begin();
-			while(*it == *it2)
+			while(*it == *it2 && it != lhs.end() && it2 != rhs.end())
 			{
 				it++;
 				it2++;
@@ -591,6 +591,44 @@ namespace ft
 		}
 		else
 			return (false);
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator!=(const 	map<Key,T,Compare,Alloc>& lhs,
+                 	const 	map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (!(lhs == rhs));
+	}
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator<(const 	map<Key,T,Compare,Alloc>& lhs,
+                 	const 	map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+	
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator>(const 	map<Key,T,Compare,Alloc>& lhs,
+                 	const 	map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator<=(const 	map<Key,T,Compare,Alloc>& lhs,
+                 	const 	map<Key,T,Compare,Alloc>& rhs )
+	{
+		if (lhs == rhs)
+			return (true);
+		return (lhs < rhs);
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator>=(const 	map<Key,T,Compare,Alloc>& lhs,
+                 	const 	map<Key,T,Compare,Alloc>& rhs )
+	{
+		if (lhs == rhs)
+			return (true);
+		return (lhs > rhs);
 	}
 }
 
