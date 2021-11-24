@@ -89,12 +89,16 @@ namespace ft
 
 			iterator begin()
 			{
+				if (_size == 0)
+					return (end());
 				iterator cur(_root);
 				return (cur.leftmost());
 			}
 
 			const_iterator begin() const
 			{
+				if (_size == 0)
+					return (end());
 				const_iterator cur(_root);
 				return (cur.leftmost());
 			}
@@ -134,13 +138,13 @@ namespace ft
 			reverse_iterator rend()
 			{
 				reverse_iterator cur(_root);
-				return ((cur.leftmost()));
+				return (++(cur.leftmost()));
 			};
 
 			const_reverse_iterator rend() const
 			{
 				const_reverse_iterator cur(_root);
-				return ((cur.leftmost()));
+				return (++(cur.leftmost()));
 			};
 
 			bool empty() const

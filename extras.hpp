@@ -270,6 +270,8 @@ namespace ft{
     template <typename Tkey, typename Tvalue >
     class mapConstIterator;
     template <typename Tkey, typename Tvalue >
+    class mapRevIterator;
+    template <typename Tkey, typename Tvalue >
     class	mapIterator
     {
         public:
@@ -303,12 +305,23 @@ namespace ft{
                 _root = cpy._root;
                 _end = cpy._end;
             }
+            mapIterator(const mapRevIterator<Tkey, Tvalue> &cpy)
+            {
+                mapRevIterator<Tkey, Tvalue> it = cpy;
+                it--;
+                _ptr = it._ptr;
+                _root = it._ptr;
+
+            }
 			virtual ~mapIterator()
             {
                 if (_end == true)
                     delete _ptr;
             }
-
+            mapIterator base(void)
+            {
+                return (*this);
+            }
 			mapIterator &operator=(mapIterator const &cpy)
             {
                 if (cpy._end == true)
@@ -412,6 +425,11 @@ namespace ft{
 				return (&(_ptr->get_pair()));
 			}
 
+            bool operator==(mapRevIterator<Tkey, Tvalue> const &cmp)
+			{
+				return (cmp == *this);
+			}
+
 			bool operator==(mapIterator const &cmp)
 			{
 				if (_end == true && cmp._end == true)
@@ -441,6 +459,10 @@ namespace ft{
             static const bool InputIter = true;
             template <typename _Tkey, typename _Tvalue>
             friend class mapConstIterator;
+            template <typename _Tkey, typename _Tvalue>
+            friend class mapRevIterator;
+            template <typename _Tkey, typename _Tvalue>
+            friend class mapConstRevIterator;
 	};
 	template <typename Tkey, typename Tvalue >
     class	mapConstIterator
@@ -482,6 +504,11 @@ namespace ft{
             {
                 if (_end == true)
                     delete _ptr;
+            }
+            
+            mapConstIterator base(void)
+            {
+                return (*this);
             }
 
 			mapConstIterator &operator=(mapConstIterator const &cpy)
@@ -572,6 +599,7 @@ namespace ft{
 				return (&(_ptr->get_pair()));
 			}
 
+            
 			bool operator==(mapConstIterator const &cmp)
 			{
 				if (_end == true && cmp._end == true)
@@ -601,6 +629,9 @@ namespace ft{
             static const bool InputIter = true;
             template <typename _Tkey, typename _Tvalue>
             friend class mapIterator;
+            template <typename _Tkey, typename _Tvalue>
+            friend class mapConstRevIterator;
+            
 	};
     template <typename Tkey, typename Tvalue >
     class   mapRevIterator
@@ -628,6 +659,13 @@ namespace ft{
                 _root = cpy._root;
                 _end = cpy._end;
             };
+            mapRevIterator(const mapIterator<Tkey, Tvalue> &cpy)
+            {
+                mapIterator<Tkey, Tvalue> it(cpy);
+                _ptr = it._ptr;
+                _root = it._root;
+                ++(*this);
+            }
 			virtual ~mapRevIterator()
             {
                 if (_end == true)
@@ -648,15 +686,21 @@ namespace ft{
                 _root = cpy._root;
                 return (*this);
             }
-
+            mapRevIterator base(void)
+            {
+                return (*this);
+            }
             mapRevIterator operator++()
 			{
-				if (_end == true)
+				ptr tmp;
+                tmp = _ptr;
+
+                if (_root->leftmost(_root) == tmp)
                 {
-                    ptr tmp = _ptr;
-                    _ptr = _ptr->get_root();
-                    _end = false;
-                    delete tmp;
+                    ptr bot = new node();
+					bot->set_root(_ptr);
+					_ptr = bot;
+                    _end = true;
                     return (*this);
                 }
 				if (_ptr->get_left())
@@ -672,15 +716,12 @@ namespace ft{
 
             mapRevIterator operator--()
             {
-                ptr tmp;
-                tmp = _ptr;
-
-                if (_root->rightmost(_root) == tmp)
+                if (_end == true)
                 {
-                    ptr bot = new node();
-					bot->set_root(_ptr);
-					_ptr = bot;
-                    _end = true;
+                    ptr tmp = _ptr;
+                    _ptr = _ptr->get_root();
+                    _end = false;
+                    delete tmp;
                     return (*this);
                 }
 				else if (_ptr->get_right())
@@ -691,6 +732,7 @@ namespace ft{
                 }
 				else if (_end == false)
 				{
+                    
 					ptr p = _ptr->get_root();
 					while (p && _ptr == p->get_right())
 					{
@@ -726,12 +768,17 @@ namespace ft{
 				return (&(_ptr->get_pair()));
 			}
 
+            pointer operator->() const
+			{
+				return (&(_ptr->get_pair()));
+			}
+
 			bool operator==(mapRevIterator const &cmp)
 			{
 				if (_end == true && cmp._end == true)
 					return (true);
 				return (_ptr->get_key() == cmp._ptr->get_key());
-			}
+			}   
 
             bool operator!=(mapRevIterator const &cmp)
 			{
@@ -753,6 +800,10 @@ namespace ft{
 			}
 
             static const bool InputIter = true;
+            template <typename _Tkey, typename _Tvalue>
+            friend class mapConstRevIterator;
+            template <typename _Tkey, typename _Tvalue>
+            friend class mapIterator;
     };
 
     template <typename Tkey, typename Tvalue >
@@ -781,6 +832,29 @@ namespace ft{
                 _root = cpy._root;
                 _end = cpy._end;
             };
+            mapConstRevIterator(const mapConstIterator<Tkey, Tvalue> &cpy)
+            {
+                mapConstIterator<Tkey, Tvalue> it(cpy);
+                _ptr = it._ptr;
+                _root = it._root;
+                ++(*this);
+            }
+            mapConstRevIterator(const mapRevIterator<Tkey, Tvalue> &cpy)
+            {
+                if (cpy._end == true)
+                    _ptr = new node(*(cpy._ptr));
+                else
+                    _ptr = cpy._ptr;
+                _root = cpy._root;
+                _end = cpy._end;
+            }
+            mapConstRevIterator(const mapIterator<Tkey, Tvalue> &cpy)
+            {
+                mapIterator<Tkey, Tvalue> it(cpy);
+                _ptr = it._ptr;
+                _root = it._root;
+                ++(*this);
+            }
 			virtual ~mapConstRevIterator()
             {
                 if (_end == true)
@@ -804,12 +878,15 @@ namespace ft{
 
             mapConstRevIterator operator++()
 			{
-				if (_end == true)
+				ptr tmp;
+                tmp = _ptr;
+
+                if (_root->leftmost(_root) == tmp)
                 {
-                    ptr tmp = _ptr;
-                    _ptr = _ptr->get_root();
-                    _end = false;
-                    delete tmp;
+                    ptr bot = new node();
+					bot->set_root(_ptr);
+					_ptr = bot;
+                    _end = true;
                     return (*this);
                 }
 				if (_ptr->get_left())
@@ -825,15 +902,12 @@ namespace ft{
 
             mapConstRevIterator operator--()
             {
-                ptr tmp;
-                tmp = _ptr;
-
-                if (_root->rightmost(_root) == tmp)
+                if (_end == true)
                 {
-                    ptr bot = new node();
-					bot->set_root(_ptr);
-					_ptr = bot;
-                    _end = true;
+                    ptr tmp = _ptr;
+                    _ptr = _ptr->get_root();
+                    _end = false;
+                    delete tmp;
                     return (*this);
                 }
 				else if (_ptr->get_right())
@@ -844,6 +918,7 @@ namespace ft{
                 }
 				else if (_end == false)
 				{
+                    
 					ptr p = _ptr->get_root();
 					while (p && _ptr == p->get_right())
 					{
@@ -875,6 +950,11 @@ namespace ft{
 			}
 
 			pointer operator->()
+			{
+				return (&(_ptr->get_pair()));
+			}
+
+            pointer operator->() const
 			{
 				return (&(_ptr->get_pair()));
 			}

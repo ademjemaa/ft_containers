@@ -61,6 +61,10 @@ namespace ft
                 ++p;
                 return it;
             }
+            It base(void)
+            {
+                return (*this);
+            }
             reference operator*() const
             {
                 return *p;

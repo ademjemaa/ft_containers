@@ -8,8 +8,9 @@ int		main(void)
 	TESTED_NAMESPACE::map<T1, T2> mp;
 	TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.begin();
 	TESTED_NAMESPACE::map<T1, T2>::const_iterator cit = mp.begin();
-
+	
 	TESTED_NAMESPACE::map<T1, T2>::reverse_iterator rit(it);
+	std::cout << "omok" << std::endl;
 
 	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator crit(rit);
 	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator crit_(it);
